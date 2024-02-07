@@ -1,0 +1,120 @@
+:root {
+	--bd-ff-fontawesome: "Font Awesome 6 Pro";
+}
+
+.select2-container--default
+	.select2-selection--multiple
+	.select2-selection__rendered {
+	box-sizing: border-box;
+	list-style: none;
+	margin: 0;
+	padding: 10px !important;
+	width: 100%;
+}
+
+#chartWrap {
+	padding: 50px;
+}
+
+[class="0-legend"] {
+	list-style: none;
+	cursor: pointer;
+	padding-left: 0;
+}
+
+[class="0-legend"] li {
+	display: inline-block;
+	font-size: 12px;
+	padding: 0 5px;
+}
+
+[class="0-legend"] li.hidden {
+	text-decoration: line-through;
+}
+
+[class="0-legend"] li span {
+	border-radius: 25px;
+	display: inline-block;
+	height: 20px;
+	margin-right: 10px;
+	width: 20px;
+	position: relative;
+	top: 5px;
+}
+
+/*RESPONSIVE*/
+
+@media screen and (max-width: 767px) {
+	#chartWrap {
+		padding: 10px;
+	}
+}
+
+/* stars rating */
+
+.rating {
+    float: left;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    float: right;
+    font-size: 15px;
+    color: #bbb;
+    padding: 0;
+    cursor: pointer;
+}
+
+.rating label:before {
+    font-family: var(--bd-ff-fontawesome);
+    content: "\f005";
+    padding: 5px;
+}
+
+.rating input:checked ~ label,
+.rating input:checked ~ label ~ label,
+.rating label:hover,
+.rating input:hover ~ label,
+.rating label:hover ~ input:checked ~ label {
+    color: #f90;
+}
+
+
+/* admin rating */
+
+.admin-star::before {
+	color: #ffc700;
+}
+.admin-star::after {
+	color: #dddad7;
+}
+
+.admin-star::before,
+.admin-star::after {
+	font-size: 2rem;
+	letter-spacing: -1px;
+	text-shadow: 0 1px 2px rgba(100, 100, 100, 0.1);
+}
+.admin-star[data-rating="1"]::before,
+.admin-star[data-rating="4"]::after {
+	content: "★";
+}
+.admin-star[data-rating="2"]::before,
+.admin-star[data-rating="3"]::after {
+	content: "★★";
+}
+.admin-star[data-rating="3"]::before,
+.admin-star[data-rating="2"]::after {
+	content: "★★★";
+}
+.admin-star[data-rating="4"]::before,
+.admin-star[data-rating="1"]::after {
+	content: "★★★★";
+}
+.admin-star[data-rating="5"]::before,
+.admin-star[data-rating="0"]::after {
+	content: "★★★★★";
+}

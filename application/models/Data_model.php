@@ -1,0 +1,68 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+class Data_model extends CI_Model
+{
+
+    // -----------------------------------
+    //            PAGE SEO
+    // -----------------------------------
+    public function getSEO($table_name, $table_id)
+    {
+        $this->db->select('*, id as id_seo');
+        $this->db->from('page_seo');
+        $this->db->where(['nama_table' => $table_name, 'id_table' => $table_id]);
+        $data = $this->db->get()->row();
+        return $data;
+    }
+    public function showDataSEO($tablename, $page)
+    {
+        $seo = $this->m_data->getSEO($tablename, $page->id);
+        if (!isset($seo)) {
+            $seo = [
+                "meta_title" => "",
+                "meta_description" => "",
+                "meta_keywords" => ""
+            ];
+        }
+        $seo = (object) $seo;
+        $page = (object) array_merge(
+            (array) $page,
+            (array) $seo
+        );
+        return $page;
+    }
+
+    public function getSocialMedia()
+    {
+        $this->db->select('*');
+        $this->db->from('social_media');
+        $this->db->order_by('sort_order asc');
+        $data = $this->db->get()->result();
+        return $data;
+    }
+    public function getFooterMenu()
+    {
+        $this->db->select('*');
+        $this->db->from('footer_menu');
+        $this->db->order_by('sort_order asc');
+        $data = $this->db->get()->result();
+        return $data;
+    }
+    public function getFooterMenuByID($id)
+    {
+        $this->db->select('*');
+        $this->db->from('footer_menu');
+        $this->db->where('id', $id);
+        $data = $this->db->get()->result();
+        return $data;
+    }
+    public function getFooterMenuList($id)
+    {
+        $this->db->select('*');
+        $this->db->from('footer_menu_list');
+        $this->db->where('id_footer_menu', $id);
+        $this->db->order_by('sort_order asc');
+        $data = $this->db->get()->result();
+        return $data;
+    }
+}
