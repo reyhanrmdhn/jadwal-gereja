@@ -8,7 +8,7 @@
     <meta name="description" content="Our Church is a premium HTML5 Church Website Template with Responsive design. Church Template includes many pages like Bulletin, Programs, events, sermons, ministries, working church contact form etc..">
     <meta name="keywords" content="Church, Website, Template, Bulletin, Programs, Events, Themeforest, Premium, Charity, Non Profit ">
     <meta name="author" content="Surjith SM">
-    <title>Church Website Template - Our Church Responsive HTML5</title>
+    <title>Sistem Penjadwalan Ibadah Gereja</title>
 
     <link href="<?= base_url('assets/') ?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/') ?>css/church.css" rel="stylesheet">
