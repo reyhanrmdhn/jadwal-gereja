@@ -27,6 +27,14 @@
                         <span class="m-form__help">Insert <?= $rowtitle ?></span>
                     </div>
                 </div>
+            <?php elseif ($rowtype == "text_full") : ?>
+                <div class="col-sm-12 mb-4">
+                    <div class="form-group m-form__group">
+                        <label><?= $rowtitle ?></label>
+                        <input type="text" class="form-control m-input" placeholder="Enter <?= $rowtitle ?>" name="<?= $rowname ?>" id="<?= $rowname ?>" value="<?= $page->$rowname ?>">
+                        <span class="m-form__help">Insert <?= $rowtitle ?></span>
+                    </div>
+                </div>
             <?php elseif ($rowtype == "icon") : ?>
                 <div class="col-sm-6 mb-4">
                     <div class="form-group m-form__group">

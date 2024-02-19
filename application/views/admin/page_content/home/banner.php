@@ -49,7 +49,9 @@
                         <th class="no-sort" style="width: 15px;">
                             <input type="checkbox" name="select-all" id="select-all" />
                         </th>
-                        <th style="width:60%">Image</th>
+                        <th style="width:30%">Image</th>
+                        <th>Title</th>
+                        <th>Subtitle</th>
                         <th style="width:10%;">Sort Order</th>
                     </tr>
                 </thead>
@@ -62,9 +64,13 @@
                                 </td>
                                 <td>
                                     <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $p->id) ?>">
-                                        <img src="<?= base_url($p->image) ?>" alt="<?= $p->image ?>" width="40%">
+                                        <img src="<?= base_url($p->image) ?>" alt="<?= $p->image ?>" width="100%">
                                     </a>
                                 </td>
+                                <td>
+                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $p->id) ?>"><?= $p->banner_title;?></a>
+                                </td>
+                                <td><?= $p->banner_subtitle;?></td>
                                 <td class="text-center"><i class="fa fa-arrows-alt-v" aria-hidden="true"></i></td>
                             </tr>
                         <?php endforeach; ?>

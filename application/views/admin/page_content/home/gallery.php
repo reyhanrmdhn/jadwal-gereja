@@ -18,18 +18,13 @@
             <div class="m-portlet__head-wrapper">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
-                        <span class="m-portlet__head-icon">
-                            <a href="javascript:void(0)" onclick="location.href='<?= base_url('admin-page/portfolio/') ?>'" style="text-decoration: none;">
-                                <i class="la la-angle-left"></i>
-                            </a>
-                        </span>
                         <h3 class="m-portlet__head-text my-3">
                             <?= $title; ?>
                         </h3>
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
-                    <a href="<?= base_url("admin-page/add-" . str_replace("_", "-", $tablename) . "/" . $id_portfolio); ?>" class="btn btn-accent m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air mr-2">
+                    <a href="<?= base_url("admin-page/add-" . str_replace("_", "-", $tablename)); ?>" class="btn btn-accent m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air mr-2">
                         <span>
                             <i class="la la-plus"></i>
                             <span>New Item</span>
@@ -54,9 +49,7 @@
                         <th class="no-sort" style="width: 15px;">
                             <input type="checkbox" name="select-all" id="select-all" />
                         </th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Image</th>
+                        <th style="width:50%">Image</th>
                         <th style="width:10%;">Sort Order</th>
                     </tr>
                 </thead>
@@ -65,18 +58,9 @@
                         <?php foreach ($pages as $p) : ?>
                             <tr id="<?= $p->id ?>">
                                 <td>
-                                    <input name="checkbox[]" class="checkbox1" type="checkbox" id="checkbox[]" value="<?= $p->id ?>">
-                                </td>
-                                <td>
-                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $id_portfolio . '/' .$p->id) ?>">
-                                        <?= $p->title; ?>
+                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $p->id) ?>">
+                                        <img src="<?= base_url($p->image) ?>" alt="<?= $p->image ?>" width="100%">
                                     </a>
-                                </td>
-                                <td>
-                                    <?= get_excerpt($p->description, 50); ?>
-                                </td>
-                                <td>
-                                    <a href="<?php echo site_url("admin-page/portfolio-image/" . $id_portfolio . "/"  . $p->id) ?>" class="btn btn-primary"><i class="fas fa-images"></i> Image List</a>
                                 </td>
                                 <td class="text-center"><i class="fa fa-arrows-alt-v" aria-hidden="true"></i></td>
                             </tr>

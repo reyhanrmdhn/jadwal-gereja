@@ -18,6 +18,11 @@
             <div class="m-portlet__head-wrapper">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon">
+                            <a href="javascript:void(0)" onclick="location.href='<?= base_url('admin-page/news') ?>'" style="text-decoration: none;">
+                                <i class="la la-angle-left"></i>
+                            </a>
+                        </span>
                         <h3 class="m-portlet__head-text my-3">
                             <?= $title; ?>
                         </h3>
@@ -49,8 +54,7 @@
                         <th class="no-sort" style="width: 15px;">
                             <input type="checkbox" name="select-all" id="select-all" />
                         </th>
-                        <th>Title</th>
-                        <th>Description</th>
+                        <th>Tags</th>
                         <th style="width:10%;">Sort Order</th>
                     </tr>
                 </thead>
@@ -62,10 +66,9 @@
                                     <input name="checkbox[]" class="checkbox1" type="checkbox" id="checkbox[]" value="<?= $p->id ?>">
                                 </td>
                                 <td>
-                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $p->id) ?>"><?= $p->title; ?></a>
-                                </td>
-                                <td>
-                                    <?= get_excerpt($p->description, 100); ?>
+                                    <a href="<?= base_url("admin-page/edit-" . str_replace("_", "-", $tablename) . "/" . $p->id) ?>">
+                                        <?= $p->tags; ?>
+                                    </a>
                                 </td>
                                 <td class="text-center"><i class="fa fa-arrows-alt-v" aria-hidden="true"></i></td>
                             </tr>

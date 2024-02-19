@@ -84,3 +84,4 @@ $route['event-programs'] = "Home/events";
 $route['event-programs/(:any)'] = "Home/events/$1";
 $route['event-calendar'] = "Home/event_calendar";
 
+$route['articles/(:any)'] = "Articles/detail/$1";

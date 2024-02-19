@@ -144,7 +144,7 @@
 
         <!-- HOME  -->
         <li class="m-menu__item  m-menu__item--submenu
-        <?= strpos($this->uri->segment(2), 'home-banner') !== false ?
+        <?= strpos($this->uri->segment(2), 'home') !== false ?
             'm-menu__item--open m-menu__item--expanded m-menu__item--active' : '' ?>" aria-haspopup="true" m-menu-submenu-toggle="hover">
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon fa fa-home"></i>
@@ -162,45 +162,66 @@
                             <span class="m-menu__link-text">Banner</span>
                         </a>
                     </li>
+                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'home-gallery') !== false ? 'active' : '' ?>" aria-haspopup="true">
+                        <a href="<?php echo site_url('admin-page/home-gallery') ?>" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Gallery</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'home-quotes') !== false ? 'active' : '' ?>" aria-haspopup="true">
+                        <a href="<?php echo site_url('admin-page/home-quotes') ?>" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Quotes</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
 
-        <!-- PORTFOLIO -->
-        <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'portfolio') !== false ? 'active' : '' ?>" aria-haspopup="true">
-            <a href="<?php echo site_url('admin-page/portfolio') ?>" class="m-menu__link ">
-                <i class="m-menu__link-icon fas fa-folder-tree"></i>
-                <span class="m-menu__link-title">
-                    <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">Portfolio</span>
-
-                    </span>
-                </span>
+        <!-- ARTICLES -->
+        <li class="m-menu__item  m-menu__item--submenu
+        <?= strpos($this->uri->segment(2), 'articles') !== false ?
+            'm-menu__item--open m-menu__item--expanded m-menu__item--active' : '' ?>" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-newspaper"></i>
+                <span class="m-menu__link-text">Articles</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
             </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'articles-list') !== false ? 'active' : '' ?>" aria-haspopup="true">
+                        <a href="<?php echo site_url('admin-page/articles-list') ?>" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Articles List</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'articles-tags') !== false ? 'active' : '' ?>" aria-haspopup="true">
+                        <a href="<?php echo site_url('admin-page/articles-tags') ?>" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Articles Tags</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </li>
 
 
          <!-- PUBLICATION -->
          <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'publication') !== false ? 'active' : '' ?>" aria-haspopup="true">
             <a href="<?php echo site_url('admin-page/publication') ?>" class="m-menu__link ">
-                <i class="m-menu__link-icon fas fa-newspaper"></i>
+                <i class="m-menu__link-icon fas fa-calendar-days"></i>
                 <span class="m-menu__link-title">
                     <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">Publication</span>
-
-                    </span>
-                </span>
-            </a>
-        </li>
-
-
-        <!-- BIO -->
-        <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'bio') !== false ? 'active' : '' ?>" aria-haspopup="true">
-            <a href="<?php echo site_url('admin-page/bio') ?>" class="m-menu__link ">
-                <i class="m-menu__link-icon fas fa-address-card"></i>
-                <span class="m-menu__link-title">
-                    <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">Bio</span>
+                        <span class="m-menu__link-text">Program & Events</span>
 
                     </span>
                 </span>

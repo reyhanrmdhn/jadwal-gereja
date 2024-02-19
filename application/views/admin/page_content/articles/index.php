@@ -49,8 +49,9 @@
                         <th class="no-sort" style="width: 15px;">
                             <input type="checkbox" name="select-all" id="select-all" />
                         </th>
-                        <th>Portfolio Name</th>
-                        <th>Portfolio Detail</th>
+                        <th>Title</th>
+                        <th>Thumbnail</th>
+                        <th>Date</th>
                         <th style="width:10%;">Sort Order</th>
                     </tr>
                 </thead>
@@ -61,19 +62,22 @@
                                 <td>
                                     <input name="checkbox[]" class="checkbox1" type="checkbox" id="checkbox[]" value="<?= $p->id ?>">
                                 </td>
-                                <td>
-                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $p->id) ?>">
+                                <td width="40%">
+                                    <a href="<?= base_url("admin-page/edit-" . str_replace("_", "-", $tablename) . "/" . $p->id) ?>">
                                         <?= $p->title; ?>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="<?php echo site_url("admin-page/portfolio-detail/" . $p->id) ?>" class="btn btn-primary"><i class="fas fa-list"></i> Detail List</a>
+                                    <a href="<?= base_url("admin-page/edit-" . str_replace("_", "-", $tablename) . "/" . $p->id) ?>">
+                                        <img src="<?= $p->thumbnail ?>" alt="" style="width:100%">
+                                    </a>
                                 </td>
+                                <td><?= date('d F Y', strtotime($p->date)); ?></td>
                                 <td class="text-center"><i class="fa fa-arrows-alt-v" aria-hidden="true"></i></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php } else {
-                        echo '<tr><td colspan="5" class="text-center">No Data</td></tr>';
+                        echo '<tr><td colspan="8" class="text-center">No Data</td></tr>';
                     } ?>
                 </tbody>
             </table>

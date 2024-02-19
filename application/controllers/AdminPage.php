@@ -536,6 +536,8 @@ class AdminPage extends MY_Controller
 
         $data['rows'] = [
             [
+                ["banner_title", "text_full"],
+                ["banner_subtitle", "description"],
                 ["image", "image"],
             ]
         ];
@@ -577,6 +579,8 @@ class AdminPage extends MY_Controller
 
         $data['rows'] = [
             [
+                ["banner_title", "text_full"],
+                ["banner_subtitle", "description"],
                 ["image", "image"],
             ]
         ];
@@ -620,371 +624,22 @@ class AdminPage extends MY_Controller
         }
     }
 
-    // Portfolio -------------------------
-    public function portfolio()
+    // Gallery -------------------------
+    public function home_gallery()
     {
-        $data['title'] = 'Portfolio List';
-        $data['tablename'] = "portfolio";
-        $data['pages'] = $this->m_data->getPortfolio();
-        $this->m_global->getAdminView('admin/page_content/portfolio/index', $data);
+        $data['title'] = 'Home Gallery List';
+        $data['tablename'] = "home_gallery";
+        $data['pages'] = $this->m_data->getHomeGallery();
+        $this->m_global->getAdminView('admin/page_content/home/gallery', $data);
     }
-    public function add_portfolio()
+    public function add_home_gallery()
     {
-        $data['tablename'] = "portfolio";
-        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
-
-        $data['rows'] = [
-            [
-                ["title", "text"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/add', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set unique slug
-            $dataSubmit['slug'] = $this->m_input->getUniqueSlug($dataSubmit['title'], $data['tablename']);
-            // insert to db
-            $this->db->insert($data['tablename'], $dataSubmit);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                 </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
-        }
-    }
-    public function edit_portfolio($id = null)
-    {
-        if (empty($id)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['tablename'] = "portfolio";
-        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
-        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
-
-        if (empty($data['page'])) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['rows'] = [
-            [
-                ["title", "text"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/edit', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set unique slug
-            $dataSubmit['slug'] = $this->m_input->getUniqueSlug($dataSubmit['title'], $data['tablename']);
-            // update table
-            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
-                </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
-        }
-    }
-    public function delete_portfolio()
-    {
-        $this->m_global->deleteTable($this->input->post('ids'), 'portfolio', 'id');
-        $this->m_global->deleteTable($this->input->post('ids'), 'portfolio_detail', 'id_portfolio');
-        $this->m_global->deleteTable($this->input->post('ids'), 'portfolio_image', 'id_portfolio');
-    }
-    public function sort_portfolio()
-    {
-        if ($this->input->post('sortOrder')) {
-            $orders = $this->input->post('sortOrder');
-            $totalOrders = count($orders);
-            for ($i = 0; $i < $totalOrders; $i++) {
-                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'portfolio');
-            };
-        } else {
-            $this->session->set_flashdata('error', 'No direct script access allowed.');
-            redirect('admin-page');
-        }
-    }
-
-    // Portfolio Detail List -------------------------
-    public function portfolio_detail($id_portfolio = null)
-    {
-        if (empty($id_portfolio)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['id_portfolio'] = $id_portfolio;
-        $portfolio = $this->db->get_where('portfolio', ['id' => $id_portfolio])->row();
-        $data['title'] = 'Portfolio Detail List - ' . $portfolio->title;
-        $data['tablename'] = "portfolio_detail";
-        $data['pages'] = $this->db->order_by('sort_order asc')->get_where($data['tablename'], array("id_portfolio" => $id_portfolio))->result();
-        $this->m_global->getAdminView('admin/page_content/portfolio/detail', $data);
-    }
-    public function add_portfolio_detail($id_portfolio = null)
-    {
-        if (empty($id_portfolio)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['tablename'] = "portfolio_detail";
-        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
-
-        $data['rows'] = [
-            [
-                ["title", "text"],
-                ["description", "description_2"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/add', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set id
-            $dataSubmit['id_portfolio'] = $id_portfolio;
-            // set unique slug
-            $dataSubmit['slug'] = $this->m_input->getUniqueSlug($dataSubmit['title'], $data['tablename']);
-            // insert to db
-            $this->db->insert($data['tablename'], $dataSubmit);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                 </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '/' . $id_portfolio);
-        }
-    }
-    public function edit_portfolio_detail($id_portfolio = null, $id = null)
-    {
-        if (empty($id_portfolio)) {
-            redirect('error-404', 'refresh');
-        }
-        if (empty($id)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['tablename'] = "portfolio_detail";
-        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
-        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
-        $data['id_portfolio'] = $id_portfolio;
-
-        if (empty($data['page'])) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['rows'] = [
-            [
-                ["title", "text"],
-                ["description", "description_2"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/edit', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // update table
-            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
-                </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '/' . $id_portfolio);
-        }
-    }
-    public function delete_portfolio_detail()
-    {
-        $this->m_global->deleteTable($this->input->post('ids'), 'portfolio_detail', 'id');
-    }
-    public function sort_portfolio_detail()
-    {
-        if ($this->input->post('sortOrder')) {
-            $orders = $this->input->post('sortOrder');
-            $totalOrders = count($orders);
-            for ($i = 0; $i < $totalOrders; $i++) {
-                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'portfolio_detail');
-            };
-        } else {
-            $this->session->set_flashdata('error', 'No direct script access allowed.');
-            redirect('admin-page');
-        }
-    }
-
-
-    // Portfolio Image List -------------------------
-    public function portfolio_image($id_portfolio = null, $id = null)
-    {
-        if (empty($id_portfolio)) {
-            redirect('error-404', 'refresh');
-        }
-        if (empty($id)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['id_portfolio'] = $id_portfolio;
-        $data['id'] = $id;
-        $portfolio_detail = $this->db->get_where('portfolio_detail', ['id' => $id])->row();
-        $data['title'] = 'Portfolio Image List - ' . $portfolio_detail->title;
-        $data['tablename'] = "portfolio_image";
-        $data['pages'] = $this->db->get_where($data['tablename'], array("id_portfolio" => $id_portfolio, "id_portfolio_detail" => $id))->result();
-        $this->m_global->getAdminView('admin/page_content/portfolio/image', $data);
-    }
-    public function add_portfolio_image($id_portfolio = null, $id = null)
-    {
-        if (empty($id_portfolio)) {
-            redirect('error-404', 'refresh');
-        }
-        if (empty($id)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['tablename'] = "portfolio_image";
+        $data['tablename'] = "home_gallery";
         $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
 
         $data['rows'] = [
             [
                 ["image", "image"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/add', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set id
-            $dataSubmit['id_portfolio'] = $id_portfolio;
-            $dataSubmit['id_portfolio_detail'] = $id;
-            // set image
-            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
-            // insert to db
-            $this->db->insert($data['tablename'], $dataSubmit);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                 </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '/' . $id_portfolio . '/' . $id);
-        }
-    }
-    public function edit_portfolio_image($id_portfolio = null, $id_portfolio_detail = null, $id = null)
-    {
-        if (empty($id_portfolio)) {
-            redirect('error-404', 'refresh');
-        }
-        if (empty($id_portfolio_detail)) {
-            redirect('error-404', 'refresh');
-        }
-        if (empty($id)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['tablename'] = "portfolio_image";
-        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
-        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
-        $data['id_portfolio'] = $id_portfolio;
-        $data['id_portfolio_detail'] = $id_portfolio_detail;
-
-        if (empty($data['page'])) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['rows'] = [
-            [
-                ["image", "image"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/edit', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set id
-            $dataSubmit['id_portfolio'] = $id_portfolio;
-            $dataSubmit['id_portfolio_detail'] = $id_portfolio_detail;
-            // set image
-            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
-            // update table
-            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
-                </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '/' . $id_portfolio . '/' . $id_portfolio_detail);
-        }
-    }
-    public function delete_portfolio_image()
-    {
-        $this->m_global->deleteTable($this->input->post('ids'), 'portfolio_image', 'id');
-    }
-    public function sort_portfolio_image()
-    {
-        if ($this->input->post('sortOrder')) {
-            $orders = $this->input->post('sortOrder');
-            $totalOrders = count($orders);
-            for ($i = 0; $i < $totalOrders; $i++) {
-                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'portfolio_image');
-            };
-        } else {
-            $this->session->set_flashdata('error', 'No direct script access allowed.');
-            redirect('admin-page');
-        }
-    }
-
-
-    // Publication -------------------------
-    public function publication()
-    {
-        $data['title'] = 'Publication List';
-        $data['tablename'] = "publication";
-        $data['pages'] = $this->m_data->getPublication();
-        $this->m_global->getAdminView('admin/page_content/publication/index', $data);
-    }
-    public function add_publication()
-    {
-        $data['tablename'] = "publication";
-        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
-
-        $data['rows'] = [
-            [
-                ["image", "image"],
-                ["url", "url"],
             ]
         ];
 
@@ -1002,20 +657,20 @@ class AdminPage extends MY_Controller
             $this->session->set_flashdata(
                 'success',
                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                            ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                     </div>'
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                 </div>'
             );
             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
         }
     }
-    public function edit_publication($id = null)
+    public function edit_home_gallery($id = null)
     {
         if (empty($id)) {
             redirect('error-404', 'refresh');
         }
 
-        $data['tablename'] = "publication";
+        $data['tablename'] = "home_gallery";
         $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
         $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
 
@@ -1026,7 +681,6 @@ class AdminPage extends MY_Controller
         $data['rows'] = [
             [
                 ["image", "image"],
-                ["url", "url"],
             ]
         ];
 
@@ -1037,29 +691,31 @@ class AdminPage extends MY_Controller
             $this->m_global->getAdminView('admin/crud_global/edit', $data);
         } else {
             $dataSubmit = $this->input->post();
+            // set image
+            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
             // update table
             $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
             $this->session->set_flashdata(
                 'success',
                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
-                </div>'
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
+                 </div>'
             );
             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
         }
     }
-    public function delete_publication()
+    public function delete_home_gallery()
     {
-        $this->m_global->deleteTable($this->input->post('ids'), 'publication', 'id');
+        $this->m_global->deleteTable($this->input->post('ids'), 'home_gallery', 'id');
     }
-    public function sort_publication()
+    public function sort_home_gallery()
     {
         if ($this->input->post('sortOrder')) {
             $orders = $this->input->post('sortOrder');
             $totalOrders = count($orders);
             for ($i = 0; $i < $totalOrders; $i++) {
-                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'publication');
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'home_gallery');
             };
         } else {
             $this->session->set_flashdata('error', 'No direct script access allowed.');
@@ -1067,24 +723,22 @@ class AdminPage extends MY_Controller
         }
     }
 
-
-    // bio -------------------------
-    public function bio()
+    // Quotes -------------------------
+    public function home_quotes()
     {
-        $data['title'] = 'Bio List';
-        $data['tablename'] = "bio";
-        $data['pages'] = $this->m_data->getBio();
-        $this->m_global->getAdminView('admin/page_content/bio/index', $data);
+        $data['title'] = 'Quotes List';
+        $data['tablename'] = "home_quotes";
+        $data['pages'] = $this->m_data->getHomeQuotes();
+        $this->m_global->getAdminView('admin/page_content/home/quotes', $data);
     }
-    public function add_bio()
+    public function add_home_quotes()
     {
-        $data['tablename'] = "bio";
+        $data['tablename'] = "home_quotes";
         $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
 
         $data['rows'] = [
             [
-                ["title", "text"],
-                ["description", "description"],
+                ["quotes", "description"],
             ]
         ];
 
@@ -1100,20 +754,20 @@ class AdminPage extends MY_Controller
             $this->session->set_flashdata(
                 'success',
                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                            ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                     </div>'
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                 </div>'
             );
             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
         }
     }
-    public function edit_bio($id = null)
+    public function edit_home_quotes($id = null)
     {
         if (empty($id)) {
             redirect('error-404', 'refresh');
         }
 
-        $data['tablename'] = "bio";
+        $data['tablename'] = "home_quotes";
         $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
         $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
 
@@ -1123,8 +777,7 @@ class AdminPage extends MY_Controller
 
         $data['rows'] = [
             [
-                ["title", "text"],
-                ["description", "description"],
+                ["quotes", "description"],
             ]
         ];
 
@@ -1147,17 +800,17 @@ class AdminPage extends MY_Controller
             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
         }
     }
-    public function delete_bio()
+    public function delete_home_quotes()
     {
-        $this->m_global->deleteTable($this->input->post('ids'), 'bio', 'id');
+        $this->m_global->deleteTable($this->input->post('ids'), 'home_quotes', 'id');
     }
-    public function sort_bio()
+    public function sort_home_quotes()
     {
         if ($this->input->post('sortOrder')) {
             $orders = $this->input->post('sortOrder');
             $totalOrders = count($orders);
             for ($i = 0; $i < $totalOrders; $i++) {
-                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'bio');
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'home_quotes');
             };
         } else {
             $this->session->set_flashdata('error', 'No direct script access allowed.');
@@ -1165,54 +818,321 @@ class AdminPage extends MY_Controller
         }
     }
 
-    // profile
-    public function profile()
+    // ARTICLES
+    // articles List
+    public function articles_list()
     {
-        $data['title'] = 'Profile';
-        $data['admin'] = $this->m_data->getUserByID($this->session->userdata('id'));
+        $data['title'] = 'Articles List';
+        $data['tablename'] = "articles";
+        $data['pages'] = $this->m_data->getArticlesList();
+        $this->m_global->getAdminView('admin/page_content/articles/index', $data);
+    }
+    public function add_articles()
+    {
+        $data['tablename'] = "articles";
+        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
 
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'min_length[5]');
-        $this->form_validation->set_rules('passwordconfirmation', 'Password Confirmation', 'min_length[5]|matches[password]');
+        $select = [
+            (object)[
+                'id' => 'DRAFT',
+                'text'    => 'DRAFT'
+            ],
+            (object)[
+                'id' => 'PUBLISH',
+                'text'    => 'PUBLISH'
+            ],
+        ];
+
+        $tags = $this->db->get('articles_tags')->result();
+        $tags = array_map(function ($data) {
+            return (object)
+            [
+                'id' => $data->id,
+                'text' => $data->tags,
+            ];
+        }, $tags);
+
+        $data['rows'] = [
+            [
+                ["title", "text_full"],
+                ["excerpt", "textarea"],
+                ["thumbnail", "image"],
+                ["content", "description"],
+                ["articles_tags[]", "multipleselect", $tags, "Select Menu Tags"],
+                ["status", "select", $select],
+            ],
+        ];
+
+        $data['seorows'] = [
+            ["meta_title", "text"],
+            ["meta_keywords", "text"],
+            ["meta_description", "textarea"],
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+        // seo rules
+        $this->m_input->setSEORules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/profile', $data);
+            $this->m_global->getAdminView('admin/crud_global/add', $data);
         } else {
-            if ($this->input->post('password') === "") {
-                $dataSubmit = array(
-                    'name' => $this->input->post('name'),
-                    'email' => $this->input->post('email'),
-                    'image' => $this->input->post('image')
-                );
-            } else {
-                $dataSubmit = array(
-                    'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                    'name' => $this->input->post('name'),
-                    'email' => $this->input->post('email'),
-                    'image' => $this->input->post('image')
-                );
+            $dataSubmit = $this->input->post();
+            $dataSubmit['date'] = date('Y-m-d');
+            // set images
+            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
+            // get slug
+            $dataSubmit['slug'] = $this->m_input->getUniqueSlug($dataSubmit['title'], $data['tablename']);
+            // get data SEO from input
+            $dataSEO = [
+                "meta_title" => $dataSubmit['meta_title'],
+                "meta_description" => $dataSubmit['meta_description'],
+                "meta_keywords" => $dataSubmit['meta_keywords'],
+            ];
+            // unset SEO data from array, because it'll store to different table
+            unset($dataSubmit['meta_title']);
+            unset($dataSubmit['meta_description']);
+            unset($dataSubmit['meta_keywords']);
+            // unset articles tags
+            $articles_tags = $dataSubmit['articles_tags'];
+            unset($dataSubmit['articles_tags']);
+
+            // insert articles first, then insert SEO
+            $this->db->insert($data['tablename'], $dataSubmit);
+
+            // get newest id articles
+            $id_articles = $this->m_data->getNewestIdArticles();
+
+            // insert articles tags
+            foreach ($articles_tags as $nt) {
+                $this->db->insert('articles_tags_list', [
+                    'id_articles' => $id_articles,
+                    'id_tags' => $nt
+                ]);
             }
 
-            $this->db->update('admin_account', $dataSubmit, array('id' => $this->session->userdata('id')));
-
-            $data_sess = array(
-                'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
-                'image' => $this->input->post('image')
-            );
-
-            $this->session->set_userdata($data_sess);
-
+            $seo = $this->m_data->getSEO($data['tablename'], $id_articles);
+            // check if seo is available
+            if (isset($seo)) {
+                // if available, then update
+                $this->db->update('page_seo', $dataSEO, ['id' => $id_articles]);
+            } else {
+                // if not, then add new
+                $dataIdTableSEO = [
+                    "nama_table" => $data['tablename'],
+                    "id_table" => $id_articles
+                ];
+                $dataSEO = array_merge($dataSEO, $dataIdTableSEO);
+                $this->db->insert('page_seo', $dataSEO);
+            }
             $this->session->set_flashdata(
                 'success',
-                '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       Updated !
-                   </div>'
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                             <button category="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                             ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                         </div>'
             );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '-list');
+        }
+    }
+    public function edit_articles($id)
+    {
+        $data['tablename'] = "articles";
+        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
+        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
+        $data['page'] = $this->m_data->showDataSEO($data['tablename'], $data['page']);
 
-            redirect('admin-page/profile');
+        if (empty($data['page'])) {
+            redirect('error-404', 'refresh');
+        }
+
+        $select = [
+            (object)[
+                'id' => 'draft',
+                'text'    => 'DRAFT'
+            ],
+            (object)[
+                'id' => 'publish',
+                'text'    => 'PUBLISH'
+            ],
+        ];
+
+        $tags = $this->db->get('articles_tags')->result();
+        $tags = array_map(function ($data) {
+            return (object)
+            [
+                'id' => $data->id,
+                'text' => $data->tags,
+            ];
+        }, $tags);
+
+        $articlesTagList = $this->m_data->getArticlesTagsListID($id);
+        $id_tags = [];
+        $x = 0;
+        foreach ($articlesTagList as $ntl) {
+            $id_tags[$x] = $ntl->id;
+            $x++;
+        }
+
+        $data['rows'] = [
+            [
+                ["title", "text_full"],
+                ["excerpt", "textarea"],
+                ["thumbnail", "image"],
+                ["content", "description"],
+                ["articles_tags[]", "multipleselect", $tags, "Select Menu Tags", $id_tags],
+                ["status", "select", $select],
+            ],
+        ];
+
+        $data['seorows'] = [
+            ["meta_title", "text"],
+            ["meta_keywords", "text"],
+            ["meta_description", "textarea"],
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+        // seo rules
+        $this->m_input->setSEORules();
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/edit', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // set images
+            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
+
+            if ($dataSubmit['title'] !== $data['page']->title) {
+                // get slug
+                $dataSubmit['slug'] = $this->m_input->getUniqueSlug($dataSubmit['title'], $data['tablename']);
+            }
+            // update articles Tags
+            $dataSubmit = $this->m_input->updateArticlesTags($dataSubmit, $id);
+            // update SEO
+            $dataSubmit = $this->m_input->updateSEO($dataSubmit, $data['tablename'], $data['page']);
+            // update table
+            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                             <button category="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                             ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
+                         </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '-list');
+        }
+    }
+    public function delete_articles_list()
+    {
+        $this->m_global->deleteTable($this->input->post('ids'), 'articles', 'id');
+    }
+    public function sort_articles_list()
+    {
+        if ($this->input->post('sortOrder')) {
+            $orders = $this->input->post('sortOrder');
+            $totalOrders = count($orders);
+            for ($i = 0; $i < $totalOrders; $i++) {
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'articles');
+            };
+        } else {
+            $this->session->set_flashdata('error', 'No direct script access allowed.');
+            redirect('admin-page');
+        }
+    }
+
+    // articles tags
+    public function articles_tags()
+    {
+        $data['title'] = 'Articles Tags';
+        $data['tablename'] = "articles_tags";
+        $data['pages'] = $this->m_data->getArticlesTags();
+        $this->m_global->getAdminView('admin/page_content/articles/tags', $data);
+    }
+    public function add_articles_tags()
+    {
+        $data['tablename'] = "articles_tags";
+        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
+
+        $data['rows'] = [
+            [
+                ["tags", "text"],
+            ],
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/add', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // insert to db
+            $this->db->insert($data['tablename'], $dataSubmit);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+        }
+    }
+    public function edit_articles_tags($id = null)
+    {
+        if (empty($id)) {
+            redirect('error-404', 'refresh');
+        }
+        $data['tablename'] = "articles_tags";
+        $data['title'] = 'Edit ' . ucfirst(str_replace("_", " ", $data['tablename']));
+        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
+
+        if (empty($data['page'])) {
+            redirect('error-404', 'refresh');
+        }
+
+        $data['rows'] = [
+            [
+                ["tags", "text"],
+            ],
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/edit', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // update table
+            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                     ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
+                 </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+        }
+    }
+    public function delete_articles_tags()
+    {
+        $this->m_global->deleteTable($this->input->post('ids'), 'articles_tags_list', 'id_tags');
+        $this->m_global->deleteTable($this->input->post('ids'), 'articles_tags', 'id');
+    }
+    public function sort_articles_tags()
+    {
+        if ($this->input->post('sortOrder')) {
+            $orders = $this->input->post('sortOrder');
+            $totalOrders = count($orders);
+            for ($i = 0; $i < $totalOrders; $i++) {
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'articles_tags');
+            };
+        } else {
+            $this->session->set_flashdata('error', 'No direct script access allowed.');
+            redirect('admin-page');
         }
     }
 }

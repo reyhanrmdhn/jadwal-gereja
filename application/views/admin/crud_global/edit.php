@@ -31,40 +31,6 @@
             </div>
         </div>
 
-        <!-- BANNER TEXT  -->
-        <?php if (isset($bannerrows)) { ?>
-            <div class="col-md-12">
-                <div class="m-portlet m-portlet--tab">
-                    <div class="m-portlet__head">
-                        <div class="m-portlet__head-caption">
-                            <div class="m-portlet__head-title">
-                                <span class="m-portlet__head-icon m--hide">
-                                    <i class="la la-gear"></i>
-                                </span>
-                                <h3 class="m-portlet__head-text">
-                                    Banner Settings
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <!--begin::Form-->
-                    <?php $data['imagetype'] = 1; ?>
-                    <?php foreach ($bannerrows as $row) :  ?>
-                        <div class="m-form m-form--fit m-form--label-align-right">
-                            <div class="m-portlet__body">
-                                <?php
-                                $data['rows'] = $row;
-                                $data['allrow'] = $bannerrows;
-                                $this->load->view('admin/crud_global/components/form_body_edit', $data); ?>
-                            </div>
-                        </div>
-                        <?php $data['imagetype'] = $data['imagetype'] + 1; ?>
-                    <?php endforeach; ?>
-                    <!--end::Form-->
-                </div>
-            </div>
-        <?php } ?>
-
         <!-- FORM DEFAULT -->
         <?php if (isset($rows)) { ?>
             <div class="col-md-12">

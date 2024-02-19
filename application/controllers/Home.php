@@ -12,6 +12,10 @@ class Home extends MY_Controller
 	public function index()
 	{
 		$data = $this->_headData('home');
+		$data['home_banner'] = $this->m_data->getHomeBanner();
+		$data['home_gallery'] = $this->m_data->getHomeGallery();
+		$data['home_quotes'] = $this->m_data->getHomeQuotes();
+		$data['articles'] = $this->m_data->getLatestArticles();
 		$this->m_global->getView('page/home/index', $data);
 	}
 	public function events($slug = null)

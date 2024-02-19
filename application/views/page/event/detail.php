@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9 has-margin-bottom">
-            <article class="blog-content"> <img src="<?= base_url('assets/') ?>images/event-pic.jpg" alt="church event" class="img-responsive has-margin-xs-bottom">
+            <article class="blog-content"> <img src="<?= base_url('assets/') ?>img/event-pic.jpg" alt="church event" class="img-responsive has-margin-xs-bottom">
                 <p class="lead">Aenean lacinia bibendum nulla sed consectetur. Etiam porta sem malesuada magna mollis euismod. Fusce dapibus, tellus ac cursus commodo.</p>
                 <p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
                 <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>

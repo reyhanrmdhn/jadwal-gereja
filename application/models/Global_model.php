@@ -49,13 +49,10 @@ class Global_model extends CI_Model
     }
 
     // pagination
-    public function get_items($table, $join, $join_cond, $order_by, $limit, $offset)
+    public function get_items($table, $order_by, $limit, $offset)
     {
-        if ($table == 'news' || $table == 'products') {
+        if ($table == 'articles') {
             $this->db->where('status', 'PUBLISH');
-        }
-        if ($join) {
-            $this->db->join($join, $join_cond);
         }
         $this->db->limit($limit, $offset);
         if ($order_by) {
@@ -80,8 +77,8 @@ class Global_model extends CI_Model
         $config['use_page_numbers'] = TRUE;
 
         //config for bootstrap pagination class integration
-        $config['full_tag_open'] = '<div class="pagination-block"><ul>';
-        $config['full_tag_close'] = '</ul></div>';
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
 
         $config['first_tag_open'] = '';
         $config['first_link'] = '';

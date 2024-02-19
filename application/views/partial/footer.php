@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <h5>CONNECT</h5>
-                    <div class="social-icons"><a href="#"><img src="<?= base_url('assets/') ?>images/fb-icon.png" alt="social"></a> <a href="#"><img src="<?= base_url('assets/') ?>images/tw-icon.png" alt="social"></a> <a href="#"><img src="<?= base_url('assets/') ?>images/in-icon.png" alt="social"></a></div>
+                    <div class="social-icons"><a href="#"><img src="<?= base_url('assets/') ?>img/fb-icon.png" alt="social"></a> <a href="#"><img src="<?= base_url('assets/') ?>img/tw-icon.png" alt="social"></a> <a href="#"><img src="<?= base_url('assets/') ?>img/in-icon.png" alt="social"></a></div>
                 </div>
             </div>
         </div>

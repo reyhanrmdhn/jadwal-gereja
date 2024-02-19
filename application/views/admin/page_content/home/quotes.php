@@ -49,8 +49,7 @@
                         <th class="no-sort" style="width: 15px;">
                             <input type="checkbox" name="select-all" id="select-all" />
                         </th>
-                        <th style="width: 40%;">Image</th>
-                        <th>Url</th>
+                        <th>Quotes</th>
                         <th style="width:10%;">Sort Order</th>
                     </tr>
                 </thead>
@@ -62,12 +61,7 @@
                                     <input name="checkbox[]" class="checkbox1" type="checkbox" id="checkbox[]" value="<?= $p->id ?>">
                                 </td>
                                 <td>
-                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename)) . '/' . $p->id ?>">
-                                        <img src="<?= base_url($p->image) ?>" alt="<?= $p->image ?>" width="40%">
-                                    </a>
-                                </td>
-                                <td>
-                                    <p><?= $p->url;?></p>
+                                    <a href="<?php echo site_url("admin-page/edit-" . str_replace("_", "-", $tablename) . '/'  . $p->id) ?>"><?= $p->quotes;?></a>
                                 </td>
                                 <td class="text-center"><i class="fa fa-arrows-alt-v" aria-hidden="true"></i></td>
                             </tr>
