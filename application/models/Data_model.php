@@ -315,4 +315,35 @@ class Data_model extends CI_Model
         $data = $this->db->get()->result();
         return $data;
     }
+
+    // PELAYAN -------------------------
+    public function getPelayanCategory()
+    {
+        $this->db->select('*');
+        $this->db->from('pelayan_category');
+        $this->db->order_by('sort_order');
+        $data = $this->db->get()->result();
+        return $data;
+    }
+    public function getPelayanJoin($id = null)
+    {
+        $this->db->select('*, pelayan.id as id, pelayan_category.id as id_pelayan_category');
+        $this->db->from('pelayan');
+        $this->db->join('pelayan_category','pelayan_category.id = pelayan.id_pelayan_category');
+        if ($id) {
+            $this->db->where('pelayan.id',$id);
+            $data = $this->db->get()->row();
+        } else {
+            $data = $this->db->get()->result();
+        }
+        return $data;
+    }
+    public function getJadwalRules()
+    {
+        $this->db->select('*');
+        $this->db->from('jadwal_rules');
+        $data = $this->db->get()->result();
+        return $data;
+    }
+
 }

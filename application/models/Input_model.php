@@ -16,6 +16,8 @@ class Input_model extends CI_Model
                     $rules = 'required|max_length[128]';
                 } else if ($rows[$i][$j][1] == 'text_2') {
                     $rules = '';
+                }  else if ($rows[$i][$j][1] == 'select_pelayan') {
+                    $rules = '';
                 } else if ($rows[$i][$j][1] == 'email') {
                     $rules = 'required|max_length[128]|is_unique[admin_account.email]';
                 } else if ($rows[$i][$j][1] == 'edit_email') {

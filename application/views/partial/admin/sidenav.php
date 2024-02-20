@@ -216,16 +216,35 @@
 
 
          <!-- PUBLICATION -->
-         <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'publication') !== false ? 'active' : '' ?>" aria-haspopup="true">
-            <a href="<?php echo site_url('admin-page/publication') ?>" class="m-menu__link ">
-                <i class="m-menu__link-icon fas fa-calendar-days"></i>
-                <span class="m-menu__link-title">
-                    <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">Program & Events</span>
-
-                    </span>
-                </span>
+         <li class="m-menu__item  m-menu__item--submenu
+        <?= strpos($this->uri->segment(2), 'pelayan') !== false || strpos($this->uri->segment(2), 'jadwal') !== false ?
+            'm-menu__item--open m-menu__item--expanded m-menu__item--active' : '' ?>" aria-haspopup="true" m-menu-submenu-toggle="hover">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon fa fa-calendar-days"></i>
+                <span class="m-menu__link-text">Penjadwalan Gereja</span>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
             </a>
+            <div class="m-menu__submenu ">
+                <span class="m-menu__arrow"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'pelayan-list') !== false ? 'active' : '' ?>" aria-haspopup="true">
+                        <a href="<?php echo site_url('admin-page/pelayan-list') ?>" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">List Pelayan</span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'jadwal') !== false ? 'active' : '' ?>" aria-haspopup="true">
+                        <a href="<?php echo site_url('admin-page/jadwal') ?>" class="m-menu__link ">
+                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                                <span></span>
+                            </i>
+                            <span class="m-menu__link-text">Jadwal Ibadah</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </li>
 
     </ul>

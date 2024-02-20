@@ -1135,4 +1135,429 @@ class AdminPage extends MY_Controller
             redirect('admin-page');
         }
     }
+
+    // JADWAL GEREJA
+    // KATEGORI PELAYAN -------------------------
+    // Quotes -------------------------
+    public function pelayan_category()
+    {
+        $data['title'] = 'List Kategori Pelayan';
+        $data['tablename'] = "pelayan_category";
+        $data['pages'] = $this->m_data->getPelayanCategory();
+        $this->m_global->getAdminView('admin/page_content/jadwal/category_pelayan', $data);
+    }
+    public function add_pelayan_category()
+    {
+        $data['tablename'] = "pelayan_category";
+        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
+
+        $data['rows'] = [
+            [
+                ["category", "text"],
+            ]
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/add', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // insert to db
+            $this->db->insert($data['tablename'], $dataSubmit);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                 </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+        }
+    }
+    public function edit_pelayan_category($id = null)
+    {
+        if (empty($id)) {
+            redirect('error-404', 'refresh');
+        }
+
+        $data['tablename'] = "pelayan_category";
+        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
+        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
+
+        if (empty($data['page'])) {
+            redirect('error-404', 'refresh');
+        }
+
+        $data['rows'] = [
+            [
+                ["category", "text"],
+            ]
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/edit', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // update table
+            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
+                </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+        }
+    }
+    public function delete_pelayan_category()
+    {
+        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
+    }
+    public function sort_pelayan_category()
+    {
+        if ($this->input->post('sortOrder')) {
+            $orders = $this->input->post('sortOrder');
+            $totalOrders = count($orders);
+            for ($i = 0; $i < $totalOrders; $i++) {
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'pelayan_category');
+            };
+        } else {
+            $this->session->set_flashdata('error', 'No direct script access allowed.');
+            redirect('admin-page');
+        }
+    }
+
+    // LIST PELAYAN -------------------------
+    public function pelayan_list()
+    {
+        $data['title'] = 'List Pelayan';
+        $data['tablename'] = "pelayan";
+        $data['pages'] = $this->m_data->getPelayanJoin();
+        $this->m_global->getAdminView('admin/page_content/jadwal/pelayan', $data);
+    }
+    public function add_pelayan()
+    {
+        $data['tablename'] = "pelayan";
+        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
+
+        $status = [
+            (object)[
+                'id' => 'Kaum Ayah',
+                'text'    => 'Kaum Ayah'
+            ],
+            (object)[
+                'id' => 'Kaum Ibu',
+                'text'    => 'Kaum Ibu'
+            ],
+            (object)[
+                'id' => 'Pemuda/i',
+                'text'    => 'Pemuda/i'
+            ],
+            (object)[
+                'id' => 'Anak-anak',
+                'text'    => 'Anak-anak'
+            ],
+        ];
+
+        $jk = [
+            (object)[
+                'id' => 'Laki-laki',
+                'text'    => 'Laki-laki'
+            ],
+            (object)[
+                'id' => 'Perempuan',
+                'text'    => 'Perempuan'
+            ],
+        ];
+
+
+        $category = $this->db->get('pelayan_category')->result();
+        $category = array_map(function ($data) {
+            return (object)
+            [
+                'id' => $data->id,
+                'text' => $data->category,
+            ];
+        }, $category);
+
+        $data['rows'] = [
+            [
+                ["nama", "text"],
+                ["id_pelayan_category", "select", $category],
+                ["status", "select" ,$status],
+                ["jenis_kelamin", "select", $jk],
+            ]
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/add', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // insert to db
+            $this->db->insert($data['tablename'], $dataSubmit);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                 </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '-list');
+        }
+    }
+    public function edit_pelayan($id = null)
+    {
+        if (empty($id)) {
+            redirect('error-404', 'refresh');
+        }
+
+        $data['tablename'] = "pelayan";
+        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
+        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
+
+        if (empty($data['page'])) {
+            redirect('error-404', 'refresh');
+        }
+
+        $status = [
+            (object)[
+                'id' => 'Kaum Ayah',
+                'text'    => 'Kaum Ayah'
+            ],
+            (object)[
+                'id' => 'Kaum Ibu',
+                'text'    => 'Kaum Ibu'
+            ],
+            (object)[
+                'id' => 'Pemuda/i',
+                'text'    => 'Pemuda/i'
+            ],
+            (object)[
+                'id' => 'Anak-anak',
+                'text'    => 'Anak-anak'
+            ],
+        ];
+
+        $jk = [
+            (object)[
+                'id' => 'Laki-laki',
+                'text'    => 'Laki-laki'
+            ],
+            (object)[
+                'id' => 'Perempuan',
+                'text'    => 'Perempuan'
+            ],
+        ];
+
+
+        $category = $this->db->get('pelayan_category')->result();
+        $category = array_map(function ($data) {
+            return (object)
+            [
+                'id' => $data->id,
+                'text' => $data->category,
+            ];
+        }, $category);
+
+        $data['rows'] = [
+            [
+                ["nama", "text"],
+                ["id_pelayan_category", "select", $category],
+                ["status", "select" ,$status],
+                ["jenis_kelamin", "select", $jk],
+            ]
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/edit', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // update table
+            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
+                </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '-list');
+        }
+    }
+    public function delete_pelayan()
+    {
+        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id');
+    }
+    public function sort_pelayan()
+    {
+        if ($this->input->post('sortOrder')) {
+            $orders = $this->input->post('sortOrder');
+            $totalOrders = count($orders);
+            for ($i = 0; $i < $totalOrders; $i++) {
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'pelayan');
+            };
+        } else {
+            $this->session->set_flashdata('error', 'No direct script access allowed.');
+            redirect('admin-page');
+        }
+    }
+
+     // JADWAL -------------------------
+     public function jadwal()
+     {
+         $data['title'] = 'Jadwal Ibadah';
+         $data['tablename'] = "jadwal";
+        //  $data['pages'] = $this->m_data->getJadwal();
+         $data['pages'] = '';
+         $this->m_global->getAdminView('admin/page_content/jadwal/index', $data);
+     }
+     public function jadwal_rules()
+     {
+         $data['title'] = 'Rules Jadwal Ibadah';
+         $data['tablename'] = "jadwal_rules";
+         $data['pages'] = $this->m_data->getJadwalRules();
+         $this->m_global->getAdminView('admin/page_content/jadwal/rules', $data);
+     }
+     public function add_jadwal_rules()
+     {
+         $data['tablename'] = "jadwal_rules";
+         $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
+
+         $hari = [
+             (object)[
+                 'id' => 'Kamis',
+                 'text'    => 'Kamis'
+             ],
+             (object)[
+                 'id' => 'Jumat',
+                 'text'    => 'Jumat'
+             ],
+             (object)[
+                 'id' => 'Sabtu',
+                 'text'    => 'Sabtu'
+             ],
+             (object)[
+                 'id' => 'Minggu',
+                 'text'    => 'Minggu'
+             ],
+         ];
+
+
+         $data['rows'] = [
+             [
+                 ["nama_kegiatan", "text"],
+                 ["hari", "select_hari", $hari],
+                 ["pelayan", "select_pelayan"],
+             ]
+         ];
+
+         // form rules
+         $this->m_input->setFormRules($data['rows']);
+
+         if ($this->form_validation->run() == FALSE) {
+             $this->m_global->getAdminView('admin/crud_global/add', $data);
+         } else {
+             $dataSubmit = $this->input->post();
+             // insert to db
+             $this->db->insert($data['tablename'], $dataSubmit);
+             $this->session->set_flashdata(
+                 'success',
+                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                         ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                  </div>'
+             );
+             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+         }
+     }
+     public function edit_jadwal_rules($id = null)
+     {
+         if (empty($id)) {
+             redirect('error-404', 'refresh');
+         }
+
+         $data['tablename'] = "jadwal_rules";
+         $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
+         $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
+
+         if (empty($data['page'])) {
+             redirect('error-404', 'refresh');
+         }
+
+         $hari = [
+            (object)[
+                'id' => 'Kamis',
+                'text'    => 'Kamis'
+            ],
+            (object)[
+                'id' => 'Jumat',
+                'text'    => 'Jumat'
+            ],
+            (object)[
+                'id' => 'Sabtu',
+                'text'    => 'Sabtu'
+            ],
+            (object)[
+                'id' => 'Minggu',
+                'text'    => 'Minggu'
+            ],
+        ];
+
+
+        $data['rows'] = [
+            [
+                ["nama_kegiatan", "text"],
+                ["hari", "select_hari", $hari],
+                ["pelayan", "select_pelayan"],
+            ]
+        ];
+
+         // form rules
+         $this->m_input->setFormRules($data['rows']);
+
+         if ($this->form_validation->run() == FALSE) {
+             $this->m_global->getAdminView('admin/crud_global/edit', $data);
+         } else {
+             $dataSubmit = $this->input->post();
+             // update table
+             $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
+             $this->session->set_flashdata(
+                 'success',
+                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
+                 </div>'
+             );
+             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+         }
+     }
+     public function delete_jadwal_rules()
+     {
+         $this->m_global->deleteTable($this->input->post('ids'), 'jadwal_rules', 'id');
+     }
+     public function sort_jadwal_rules()
+     {
+         if ($this->input->post('sortOrder')) {
+             $orders = $this->input->post('sortOrder');
+             $totalOrders = count($orders);
+             for ($i = 0; $i < $totalOrders; $i++) {
+                 $this->m_global->updateDataPosition($orders[$i], $i + 1, 'jadwal_rules');
+             };
+         } else {
+             $this->session->set_flashdata('error', 'No direct script access allowed.');
+             redirect('admin-page');
+         }
+     }
 }

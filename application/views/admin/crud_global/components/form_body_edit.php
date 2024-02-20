@@ -130,6 +130,79 @@
                         <span class="m-form__help">Insert <?= $rowtitle ?></span>
                     </div>
                 </div>
+            <?php elseif ($rowtype == "select_hari") : ?>
+                <div class="col-sm-6 mb-4">
+                    <div class="form-group m-form__group">
+                        <label><?= $rowtitle ?></label>
+                        <?php
+                        $value = $row[2];
+                        ?>
+                        <select class="form-control m-input select2bs" id="<?= $rowname ?>" name="<?= $rowname ?>" required="">
+                            <?php foreach ($value as $v) : ?>
+                                <?php if ($v->id == $page->$rowname) { ?>
+                                    <option value="<?= $v->id; ?>"><?= $v->text; ?></option>
+                                <?php } ?>
+                            <?php endforeach ?>
+                        </select>
+                        <span class="m-form__help">Insert <?= $rowtitle ?></span>
+                    </div>
+                </div>
+            <?php elseif ($rowtype == "select_pelayan") : ?>
+                <div class="col-sm-12 mb-4">
+                    <?php
+                    $dataArray = json_decode($page->$rowname, true);
+                    ?>
+                    <div class="row">
+                        <?php $x = 0 ?>
+                        <?php foreach ($dataArray as $item) : ?>
+                            <div class="col-lg-6 mb-4">
+                                <div class="form-group m-form__group">
+                                    <label><?= $rowtitle ?></label>
+                                    <select class="form-control m-input select2bs" id="<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>" required="">
+                                        <option value="<?= $item['pelayan']; ?>"><?= $item['pelayan']; ?></option>
+                                    </select>
+                                    <span class="m-form__help">Insert <?= $rowtitle ?></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="form-group m-form__group">
+                                    <label>Jumlah Pelayan <?= $item['pelayan']; ?></label>
+                                    <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>" value="<?= $item['jumlah']; ?>" onchange="combineSelectValues()" required>
+                                    <span class="m-form__help">Add Jumlah Pelayan <?= $item['pelayan']; ?></span>
+                                </div>
+                            </div>
+                            <?php $x++; ?>
+                        <?php endforeach; ?>
+                        <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
+                    </div>
+                    <script>
+                        function combineSelectValues() {
+                            // Get selected values from each select element
+                            <?php foreach ($dataArray as $item) : ?>
+                                // Get the select element by its ID
+                                var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>');
+                                // Get the selected option
+                                var selectedOption = mySelect.options[mySelect.selectedIndex];
+                                // Get the value of the selected option
+                                var selectedValue = selectedOption.value;
+
+                                var selectValue_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?> = {
+                                    "pelayan": selectedValue,
+                                    "jumlah": document.getElementById("jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>").value
+                                };
+                            <?php endforeach; ?>
+                            // Combine values into an array
+                            var combinedArray = [
+                                <?php foreach ($dataArray as $item) : ?>
+                                    selectValue_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>,
+                                <?php endforeach; ?>
+                            ];
+
+                            // Log or do something with the combined array
+                            document.getElementById('<?= $rowtitle ?>').value = JSON.stringify(combinedArray);
+                        }
+                    </script>
+                </div>
             <?php elseif ($rowtype == "multipleselect") : ?>
                 <div class="col-sm-6 mb-4">
                     <div class="form-group m-form__group">
