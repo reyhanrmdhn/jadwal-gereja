@@ -1290,7 +1290,7 @@ class AdminPage extends MY_Controller
             [
                 ["nama", "text"],
                 ["id_pelayan_category", "select", $category],
-                ["status", "select" ,$status],
+                ["status", "select", $status],
                 ["jenis_kelamin", "select", $jk],
             ]
         ];
@@ -1372,7 +1372,7 @@ class AdminPage extends MY_Controller
             [
                 ["nama", "text"],
                 ["id_pelayan_category", "select", $category],
-                ["status", "select" ,$status],
+                ["status", "select", $status],
                 ["jenis_kelamin", "select", $jk],
             ]
         ];
@@ -1414,103 +1414,41 @@ class AdminPage extends MY_Controller
         }
     }
 
-     // JADWAL -------------------------
-     public function jadwal()
-     {
-         $data['title'] = 'Jadwal Ibadah';
-         $data['tablename'] = "jadwal";
-        //  $data['pages'] = $this->m_data->getJadwal();
-         $data['pages'] = '';
-         $this->m_global->getAdminView('admin/page_content/jadwal/index', $data);
-     }
-     public function jadwal_rules()
-     {
-         $data['title'] = 'Rules Jadwal Ibadah';
-         $data['tablename'] = "jadwal_rules";
-         $data['pages'] = $this->m_data->getJadwalRules();
-         $this->m_global->getAdminView('admin/page_content/jadwal/rules', $data);
-     }
-     public function add_jadwal_rules()
-     {
-         $data['tablename'] = "jadwal_rules";
-         $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
+    // JADWAL -------------------------
+    public function jadwal()
+    {
+        $data['title'] = 'Jadwal Ibadah';
+        $data['tablename'] = "jadwal";
+        $data['pages'] = $this->m_data->getJadwal();
+        $this->m_global->getAdminView('admin/page_content/jadwal/index', $data);
+    }
+    public function jadwal_rules()
+    {
+        $data['title'] = 'Rules Jadwal Ibadah';
+        $data['tablename'] = "jadwal_rules";
+        $data['pages'] = $this->m_data->getJadwalRules();
+        $this->m_global->getAdminView('admin/page_content/jadwal/rules', $data);
+    }
+    public function add_jadwal_rules()
+    {
+        $data['tablename'] = "jadwal_rules";
+        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
 
-         $hari = [
-             (object)[
-                 'id' => 'Kamis',
-                 'text'    => 'Kamis'
-             ],
-             (object)[
-                 'id' => 'Jumat',
-                 'text'    => 'Jumat'
-             ],
-             (object)[
-                 'id' => 'Sabtu',
-                 'text'    => 'Sabtu'
-             ],
-             (object)[
-                 'id' => 'Minggu',
-                 'text'    => 'Minggu'
-             ],
-         ];
-
-
-         $data['rows'] = [
-             [
-                 ["nama_kegiatan", "text"],
-                 ["hari", "select_hari", $hari],
-                 ["pelayan", "select_pelayan"],
-             ]
-         ];
-
-         // form rules
-         $this->m_input->setFormRules($data['rows']);
-
-         if ($this->form_validation->run() == FALSE) {
-             $this->m_global->getAdminView('admin/crud_global/add', $data);
-         } else {
-             $dataSubmit = $this->input->post();
-             // insert to db
-             $this->db->insert($data['tablename'], $dataSubmit);
-             $this->session->set_flashdata(
-                 'success',
-                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                         ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                  </div>'
-             );
-             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
-         }
-     }
-     public function edit_jadwal_rules($id = null)
-     {
-         if (empty($id)) {
-             redirect('error-404', 'refresh');
-         }
-
-         $data['tablename'] = "jadwal_rules";
-         $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
-         $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
-
-         if (empty($data['page'])) {
-             redirect('error-404', 'refresh');
-         }
-
-         $hari = [
+        $hari = [
             (object)[
-                'id' => 'Kamis',
+                'id' => 'Thursday',
                 'text'    => 'Kamis'
             ],
             (object)[
-                'id' => 'Jumat',
+                'id' => 'Friday',
                 'text'    => 'Jumat'
             ],
             (object)[
-                'id' => 'Sabtu',
+                'id' => 'Saturday',
                 'text'    => 'Sabtu'
             ],
             (object)[
-                'id' => 'Minggu',
+                'id' => 'Sunday',
                 'text'    => 'Minggu'
             ],
         ];
@@ -1520,44 +1458,171 @@ class AdminPage extends MY_Controller
             [
                 ["nama_kegiatan", "text"],
                 ["hari", "select_hari", $hari],
+                ["jam_mulai", "time"],
+                ["jam_selesai", "time"],
+                ["deskripsi", "description"],
                 ["pelayan", "select_pelayan"],
             ]
         ];
 
-         // form rules
-         $this->m_input->setFormRules($data['rows']);
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
 
-         if ($this->form_validation->run() == FALSE) {
-             $this->m_global->getAdminView('admin/crud_global/edit', $data);
-         } else {
-             $dataSubmit = $this->input->post();
-             // update table
-             $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
-             $this->session->set_flashdata(
-                 'success',
-                 '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/add', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // insert to db
+            $this->db->insert($data['tablename'], $dataSubmit);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                         ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
+                  </div>'
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+        }
+    }
+    public function edit_jadwal_rules($id = null)
+    {
+        if (empty($id)) {
+            redirect('error-404', 'refresh');
+        }
+
+        $data['tablename'] = "jadwal_rules";
+        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
+        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
+
+        if (empty($data['page'])) {
+            redirect('error-404', 'refresh');
+        }
+
+        $hari = [
+            (object)[
+                'id' => 'Thursday',
+                'text'    => 'Kamis'
+            ],
+            (object)[
+                'id' => 'Friday',
+                'text'    => 'Jumat'
+            ],
+            (object)[
+                'id' => 'Saturday',
+                'text'    => 'Sabtu'
+            ],
+            (object)[
+                'id' => 'Sunday',
+                'text'    => 'Minggu'
+            ],
+        ];
+
+
+        $data['rows'] = [
+            [
+                ["nama_kegiatan", "text"],
+                ["hari", "select_hari", $hari],
+                ["jam_mulai", "time"],
+                ["jam_selesai", "time"],
+                ["deskripsi", "description"],
+                ["pelayan", "select_pelayan"],
+            ]
+        ];
+
+        // form rules
+        $this->m_input->setFormRules($data['rows']);
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->m_global->getAdminView('admin/crud_global/edit', $data);
+        } else {
+            $dataSubmit = $this->input->post();
+            // update table
+            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
+            $this->session->set_flashdata(
+                'success',
+                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
                         ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
                  </div>'
-             );
-             redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
-         }
-     }
-     public function delete_jadwal_rules()
-     {
-         $this->m_global->deleteTable($this->input->post('ids'), 'jadwal_rules', 'id');
-     }
-     public function sort_jadwal_rules()
-     {
-         if ($this->input->post('sortOrder')) {
-             $orders = $this->input->post('sortOrder');
-             $totalOrders = count($orders);
-             for ($i = 0; $i < $totalOrders; $i++) {
-                 $this->m_global->updateDataPosition($orders[$i], $i + 1, 'jadwal_rules');
-             };
-         } else {
-             $this->session->set_flashdata('error', 'No direct script access allowed.');
-             redirect('admin-page');
-         }
-     }
+            );
+            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
+        }
+    }
+    public function delete_jadwal_rules()
+    {
+        $this->m_global->deleteTable($this->input->post('ids'), 'jadwal_rules', 'id');
+    }
+    public function sort_jadwal_rules()
+    {
+        if ($this->input->post('sortOrder')) {
+            $orders = $this->input->post('sortOrder');
+            $totalOrders = count($orders);
+            for ($i = 0; $i < $totalOrders; $i++) {
+                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'jadwal_rules');
+            };
+        } else {
+            $this->session->set_flashdata('error', 'No direct script access allowed.');
+            redirect('admin-page');
+        }
+    }
+
+    public function generateJadwal()
+    {
+        // Input data
+        $month = date('n'); // Current month
+        $year = date('Y'); // Current year
+
+        $jadwal_hari = $this->m_data->getDayCount();
+        $days = array();
+        foreach ($jadwal_hari as $day) {
+            $days[$day['hari']] = $day['count'];
+        }
+
+        $jadwal_rules = $this->m_data->getJadwalRules();
+        $services = array();
+        foreach ($jadwal_rules as $rules) {
+            $group_hari = $this->db->get_where('jadwal_rules', ['hari' => $rules->hari])->result();
+            for ($i = 1; $i <= count($group_hari); $i++) {
+                $dataPelayan = json_decode($rules->pelayan, true);
+                foreach ($dataPelayan as $item) {
+                    if ($item['jumlah'] > 0) {
+                        $services[$rules->hari][$i][$item['pelayan']] = $item['jumlah'];
+                    }
+                }
+            }
+        }
+
+        $pelayan = $this->db->get('pelayan_category')->result();
+        $participants = array();
+        foreach ($pelayan as $p) {
+            $pelayanGroup = $this->db->get_where('pelayan', ['id_pelayan_category' => $p->id])->result();
+            foreach ($pelayanGroup as $pg) {
+                $participants[$p->category][] = $pg->nama;
+            }
+        }
+
+        // Generate Schedule
+        $jadwal = generateFullMonthSchedule($services, $days, $participants, $month, $year);
+        $this->db->truncate('jadwal');
+
+        for ($i = 0; $i < count($jadwal); $i++) :
+            $kegiatan = $this->db->order_by('id asc')->get_where('jadwal_rules', ['hari' => $jadwal[$i]['dayOfWeek']])->result();
+            $data = [
+                'nama_kegiatan' => (count($kegiatan) > 1 ? $kegiatan[$jadwal[$i]['serviceIndex'] - 1]->nama_kegiatan : $kegiatan[0]->nama_kegiatan),
+                'hari' => $jadwal[$i]['dayOfWeek'],
+                'tanggal' =>  date('Y') . '-' . date('m') . '-' . $jadwal[$i]['dayOfMonth'],
+                'pelayan' => json_encode($jadwal[$i]['roles']),
+            ];
+            $this->db->insert('jadwal', $data);
+        endfor;
+
+        $this->session->set_flashdata(
+            'success',
+            '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                    Jadwal Generated Successfully!
+             </div>'
+        );
+        redirect('admin-page/jadwal');
+    }
 }

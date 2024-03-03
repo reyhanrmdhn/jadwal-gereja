@@ -40,41 +40,48 @@
             <table class="table table-striped- table-bordered table-hover table-checkable" id="table_sortable">
                 <thead>
                     <tr>
-                        <th class="no-sort" style="width: 15px;">
-                            <input type="checkbox" name="select-all" id="select-all" />
-                        </th>
-                        <th>Nama</th>
-                        <th>Status</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Jenis Pelayanan</th>
+                        <th>No.</th>
+                        <th>Nama Kegiatan</th>
+                        <th>Tanggal</th>
+                        <th>Pelayan</th>
                     </tr>
                 </thead>
-                <tbody class="sortable">
-                    <!-- <?php if ($pages) { ?>
+                <tbody>
+                    <?php if ($pages) { ?>
+                        <?php $x = 1; ?>
                         <?php foreach ($pages as $p) : ?>
-                            <tr id="<?= $p->id ?>">
+                            <tr>
                                 <td>
-                                    <input name="checkbox[]" class="checkbox1" type="checkbox" id="checkbox[]" value="<?= $p->id ?>">
-                                </td>
-                                <td width="40%">
-                                    <a href="<?= base_url("admin-page/edit-" . str_replace("_", "-", $tablename) . "/" . $p->id) ?>">
-                                        <?= $p->nama; ?>
-                                    </a>
+                                    <?= $x; ?>
                                 </td>
                                 <td>
-                                    <?= $p->status;?>
+                                    <?= $p->nama_kegiatan; ?>
                                 </td>
                                 <td>
-                                    <?= $p->jenis_kelamin;?>
+                                    <?= getHari($p->hari) . ', ' . $p->tanggal; ?>
                                 </td>
                                 <td>
-                                    <?= $p->category;?>
+                                    <?php
+                                    // Decode the JSON data into a PHP array
+                                    $decoded_data = json_decode($p->pelayan, true);
+
+                                    // Iterate through the decoded data and prepare for display
+                                    $formatted_data = [];
+                                    foreach ($decoded_data as $key => $value) {
+                                        $formatted_data[] = '<b>' . ucfirst($key) . '</b>' . ' : ' . implode(', ', $value);
+                                    }
+
+                                    // Display the formatted data
+                                    $pelayan = implode('<br>', $formatted_data);
+                                    echo $pelayan;
+                                    ?>
                                 </td>
                             </tr>
+                            <?php $x++; ?>
                         <?php endforeach; ?>
                     <?php } else {
                         echo '<tr><td colspan="8" class="text-center">No Data</td></tr>';
-                    } ?> -->
+                    } ?>
                 </tbody>
             </table>
         </div>

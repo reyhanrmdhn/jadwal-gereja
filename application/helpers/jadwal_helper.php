@@ -133,3 +133,24 @@ function getMaxIndex($array) {
 
   return $maxColIndex;
 }
+
+function getHari($day)
+{
+  $hari = '';
+  switch ($day) {
+    case 'Thursday':
+      $hari = "Kamis";
+      break;
+    case 'Friday':
+      $hari = "Jum'at";
+      break;
+    case 'Saturday':
+      $hari = "Sabtu";
+      break;
+    case 'Sunday':
+      $hari = "Minggu";
+      break;
+  }
+
+  return $hari;
+}

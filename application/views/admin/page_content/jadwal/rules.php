@@ -29,6 +29,12 @@
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
+                    <a href="<?= base_url("admin-page/generateJadwal"); ?>" class="btn btn-primary m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air mr-2">
+                        <span>
+                            <i class="fas fa-calendar-circle-plus"></i>
+                            <span>Generate Jadwal</span>
+                        </span>
+                    </a>
                     <a href="<?= base_url("admin-page/add-" . str_replace("_", "-", $tablename)); ?>" class="btn btn-accent m-btn m-btn--custom m-btn--pill m-btn--icon m-btn--air mr-2">
                         <span>
                             <i class="la la-plus"></i>

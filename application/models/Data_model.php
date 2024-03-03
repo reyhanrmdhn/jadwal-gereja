@@ -345,5 +345,33 @@ class Data_model extends CI_Model
         $data = $this->db->get()->result();
         return $data;
     }
+    public function getDayCount() {
+        $query = $this->db->select('hari, COUNT(hari) as count')
+                          ->from('jadwal_rules')
+                          ->group_by('hari')
+                          ->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return array();
+        }
+    }
+    public function getJadwal()
+    {
+        $this->db->select('*');
+        $this->db->from('jadwal');
+        $data = $this->db->get()->result();
+        return $data;
+    }
+    public function getJadwalThisMonth($month)
+    {
+        $this->db->select('*');
+        $this->db->from('jadwal');
+        $this->db->where("MONTH(tanggal) = $month");
+        $data = $this->db->get()->result();
+        return $data;
+    }
+
 
 }
