@@ -17,14 +17,14 @@ class AdminPage extends MY_Controller
     // users
     public function users()
     {
-        $data['title'] = 'User Management';
-        $data['tablename'] = "admin_account";
+        $data['title'] = 'Manajemen Majelis';
+        $data['tablename'] = "majelis";
         $data['pages'] = $this->m_data->getUsers();
         $this->m_global->getAdminView('admin/users', $data);
     }
-    public function add_admin_account()
+    public function add_majelis()
     {
-        $data['tablename'] = "admin_account";
+        $data['tablename'] = "majelis";
         $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
         $data['rows'] = [
             [
@@ -59,9 +59,9 @@ class AdminPage extends MY_Controller
             redirect($this->uri->segment(1) . '/user-management');
         }
     }
-    public function edit_admin_account($id)
+    public function edit_majelis($id)
     {
-        $data['tablename'] = "admin_account";
+        $data['tablename'] = "majelis";
         $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
         $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
         if (empty($data['page'])) {
@@ -99,7 +99,7 @@ class AdminPage extends MY_Controller
     }
     public function changepassword($id)
     {
-        $data['tablename'] = "admin_account";
+        $data['tablename'] = "majelis";
         $data['title'] = 'Change Password ' . ucwords(str_replace("_", " ", $data['tablename']));
         $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
         if (empty($data['page'])) {
@@ -135,7 +135,7 @@ class AdminPage extends MY_Controller
     }
     public function delete_user_management()
     {
-        $this->m_global->deleteTable($this->input->post('ids'), 'admin_account', 'id');
+        $this->m_global->deleteTable($this->input->post('ids'), 'majelis', 'id');
     }
 
 
@@ -790,7 +790,7 @@ class AdminPage extends MY_Controller
                 );
             }
 
-            $this->db->update('admin_account', $dataSubmit, array('id' => $this->session->userdata('id')));
+            $this->db->update('majelis', $dataSubmit, array('id' => $this->session->userdata('id')));
 
             $data_sess = array(
                 'name' => $this->input->post('name'),

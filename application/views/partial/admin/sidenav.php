@@ -19,7 +19,7 @@
                 <i class="m-menu__link-icon  fa fa-users"></i>
                 <span class="m-menu__link-title">
                     <span class="m-menu__link-wrap">
-                        <span class="m-menu__link-text">Users</span>
+                        <span class="m-menu__link-text">Majelis</span>
                     </span>
                 </span>
             </a>

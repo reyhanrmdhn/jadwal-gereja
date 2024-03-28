@@ -25,6 +25,6 @@ class Home extends MY_Controller
 	}
 	public function event_calendar()
 	{
-		$this->m_global->getView('page/event/calendar');
+		$this->m_global->getView('page/event/calendar',null);
 	}
 }

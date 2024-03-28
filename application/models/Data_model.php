@@ -9,7 +9,7 @@ class Data_model extends CI_Model
     public function getUsers()
     {
         $this->db->select('*');
-        $this->db->from('admin_account');
+        $this->db->from('majelis');
         $this->db->order_by('date_created desc');
         $data = $this->db->get()->result();
         return $data;
@@ -17,7 +17,7 @@ class Data_model extends CI_Model
     public function getUserByID($id)
     {
         $this->db->select('*');
-        $this->db->from('admin_account');
+        $this->db->from('majelis');
         $this->db->where('id', $id);
         $data = $this->db->get()->row();
         return $data;

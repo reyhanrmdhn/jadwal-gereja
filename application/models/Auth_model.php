@@ -9,7 +9,7 @@ class Auth_model extends CI_Model
             'failed_login_count' => 1
         );
         $this->db->where('email', $email);
-        $this->db->update('admin_account', $failedUpdate);
+        $this->db->update('majelis', $failedUpdate);
     }
 
     public function failedLoginCount($email, $newFailedLoginCount)
@@ -18,7 +18,7 @@ class Auth_model extends CI_Model
             'failed_login_count' => $newFailedLoginCount
         );
         $this->db->where('email', $email);
-        $this->db->update('admin_account', $failedUpdate);
+        $this->db->update('majelis', $failedUpdate);
     }
 
     public function restoreFailedLoginCount($id)
@@ -28,6 +28,6 @@ class Auth_model extends CI_Model
             'failed_login_count' => 0
         );
         $this->db->where('id', $id);
-        $this->db->update('admin_account', $dataSubmit);
+        $this->db->update('majelis', $dataSubmit);
     }
 }

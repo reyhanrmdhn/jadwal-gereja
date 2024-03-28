@@ -24,7 +24,7 @@ class AdminAuth extends MY_Controller
     {
         $email = $this->input->post('email');
         $password = $this->input->post('password');
-        $admin = $this->db->get_where('admin_account', ['email' => $email])->row_array();
+        $admin = $this->db->get_where('majelis', ['email' => $email])->row_array();
         // jika email tersedia
         if ($admin) {
             // brute force protection variables
@@ -66,7 +66,7 @@ class AdminAuth extends MY_Controller
                     $newFailedLoginCount = $failed_login_count + 1;
                     $this->m_auth->failedLoginCount($email, $newFailedLoginCount);
                 }
-                $admin = $this->db->get_where('admin_account', ['email' => $email])->row_array();
+                $admin = $this->db->get_where('majelis', ['email' => $email])->row_array();
                 $this->session->set_flashdata(
                     'message',
                     '<div class="m-alert m-alert--outline alert alert-danger alert-dismissible animated fadeIn" role="alert">
