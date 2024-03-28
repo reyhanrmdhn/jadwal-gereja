@@ -157,7 +157,7 @@
                         <div class="row">
                             <?php $x = 0 ?>
                             <?php foreach ($dataPelayan as $item) : ?>
-                                <?php if (isset($dataArray[$x]['pelayan']) && $item->category == $dataArray[$x]['pelayan']) : ?>
+                                <?php if (isset($dataArray[$x]['pelayan']) && $item->category === $dataArray[$x]['pelayan']) : ?>
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group m-form__group">
                                             <label><?= $rowtitle ?></label>
@@ -194,13 +194,13 @@
                                 <?php endif; ?>
                                 <?php $x++; ?>
                             <?php endforeach; ?>
-                            <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
+                            <input type="text" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
                         </div>
                     </div>
                     <script>
                         window.onload = function() {
                             // Get selected values from each select element
-                            <?php foreach ($dataArray as $item) : ?>
+                            <?php foreach ($dataPelayan as $item) : ?>
                                 // Get the select element by its ID
                                 var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item->category)) ?>');
                                 // Get the selected option
@@ -215,7 +215,7 @@
                             <?php endforeach; ?>
                             // Combine values into an array
                             var combinedArray = [
-                                <?php foreach ($dataArray as $item) : ?>
+                                <?php foreach ($dataPelayan as $item) : ?>
                                     selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?>,
                                 <?php endforeach; ?>
                             ];
@@ -242,7 +242,7 @@
                                 <div class="col-lg-6 mb-4">
                                     <div class="form-group m-form__group">
                                         <label>Jumlah Pelayan <?= $pelayan->category; ?></label>
-                                        <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>" value="" required>
+                                        <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>" value="" required onchange="combineSelectValues2()">
                                         <span class="m-form__help">Add Jumlah Pelayan <?= $pelayan->category; ?></span>
                                     </div>
                                 </div>
