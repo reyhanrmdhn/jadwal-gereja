@@ -157,7 +157,7 @@
                         <div class="row">
                             <?php $x = 0 ?>
                             <?php foreach ($dataPelayan as $item) : ?>
-                                <?php if ($item->category == $dataArray[$x]['pelayan']) : ?>
+                                <?php if (isset($dataArray[$x]['pelayan']) && $item->category == $dataArray[$x]['pelayan']) : ?>
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group m-form__group">
                                             <label><?= $rowtitle ?></label>
