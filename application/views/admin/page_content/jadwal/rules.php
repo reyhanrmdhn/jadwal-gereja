@@ -78,7 +78,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <?= $p->hari; ?>
+                                    <?= getHari($p->hari); ?>
                                 </td>
                                 <td>
                                     <?php
