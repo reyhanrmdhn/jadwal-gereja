@@ -7,30 +7,6 @@ function is_logged_in()
   }
 }
 
-function get_excerpt($description, $limit = 100)
-{
-  // Remove any HTML tags from the description
-  $description = strip_tags($description);
-
-  // Explode the description into an array of words
-  $words = explode(' ', $description);
-
-  // Count the number of words
-  $word_count = count($words);
-
-  // If the description is already within the word limit, return it as is
-  if ($word_count <= $limit) {
-    return $description;
-  }
-
-  // If the description is longer than the word limit, extract the first $limit words
-  $excerpt = implode(' ', array_slice($words, 0, $limit));
-
-  // Add an ellipsis (...) to indicate that the text continues
-  $excerpt .= '...';
-
-  return $excerpt;
-}
 
 function generateFullMonthSchedule($services, $days, $participants, $month, $year) {
   $schedule = [];
@@ -57,7 +33,7 @@ function generateFullMonthSchedule($services, $days, $participants, $month, $yea
           // Only include the day in the schedule if there is at least one service scheduled
           if ($numServices > 0) {
               // Iterate over each service for the current day
-              for ($i = 1; $i <= $numServices; $i++) {
+              for ($i = 0; $i < $numServices; $i++) {
                   // Check if the service index exists
                   if (isset($services[$currentDay][$i])) {
                       $service = $services[$currentDay][$i];
@@ -138,6 +114,15 @@ function getHari($day)
 {
   $hari = '';
   switch ($day) {
+    case 'Monday':
+      $hari = "Senin";
+      break;
+    case 'Tuesday':
+      $hari = "Selasa";
+      break;
+    case 'Wednesday':
+      $hari = "Rabu";
+      break;
     case 'Thursday':
       $hari = "Kamis";
       break;
@@ -153,4 +138,49 @@ function getHari($day)
   }
 
   return $hari;
+}
+
+function getBulan($month)
+{
+  $bulan = '';
+  switch ($month) {
+    case 'January':
+      $bulan = "Januari";
+      break;
+    case 'February':
+      $bulan = "Februari";
+      break;
+    case 'March':
+      $bulan = "Maret";
+      break;
+    case 'April':
+      $bulan = "April";
+      break;
+    case 'May':
+      $bulan = "Mei";
+      break;
+    case 'June':
+      $bulan = "Juni";
+      break;
+    case 'July':
+      $bulan = "Juli";
+      break;
+    case 'August':
+      $bulan = "Agustus";
+      break;
+    case 'September':
+      $bulan = "September";
+      break;
+    case 'October':
+      $bulan = "Oktober";
+      break;
+    case 'November':
+      $bulan = "November";
+      break;
+    case 'December':
+      $bulan = "Desember";
+      break;
+  }
+
+  return $bulan;
 }

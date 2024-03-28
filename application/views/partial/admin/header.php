@@ -91,42 +91,6 @@
                         <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
                             <div class="m-stack__item m-topbar__nav-wrapper">
                                 <ul class="m-topbar__nav m-nav m-nav--inline">
-                                    <!-- QUICK ACTION -->
-                                    <li class="m-nav__item m-topbar__quick-actions m-topbar__quick-actions--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push m-dropdown--mobile-full-width m-dropdown--skin-light" m-dropdown-toggle="click">
-                                        <a href="#" class="m-nav__link m-dropdown__toggle">
-                                            <span class="m-nav__link-badge m-badge m-badge--dot m-badge--info m--hide"></span>
-                                            <span class="m-nav__link-icon">
-                                                <i class="fas fa-bolt"></i>
-                                            </span>
-                                        </a>
-                                        <div class="m-dropdown__wrapper">
-                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
-                                            <div class="m-dropdown__inner">
-                                                <div class="m-dropdown__header m--align-center" style="background: url(<?= base_url(); ?>/assets/admin/app/media/img/misc/quick_actions_bg.jpg); background-size: cover;">
-                                                    <span class="m-dropdown__header-title">Quick Actions</span>
-                                                    <span class="m-dropdown__header-subtitle">Shortcuts</span>
-                                                </div>
-                                                <div class="m-dropdown__body m-dropdown__body--paddingless">
-                                                    <div class="m-dropdown__content">
-                                                        <div class="data" data="false" data-height="380" data-mobile-height="200">
-                                                            <div class="m-nav-grid m-nav-grid--skin-light">
-                                                                <div class="m-nav-grid__row">
-                                                                    <a href="<?= site_url('admin-page/add-programs') ?>" class="m-nav-grid__item">
-                                                                        <i class="m-nav-grid__icon fas fa-folder-tree"></i>
-                                                                        <span class="m-nav-grid__text">Add Portfolio</span>
-                                                                    </a>
-                                                                    <a href="<?= site_url('admin-page/add-news') ?>" class="m-nav-grid__item">
-                                                                        <i class="m-nav-grid__icon fas fa-newspaper "></i>
-                                                                        <span class="m-nav-grid__text">Add Publication</span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
                                     <!-- PROFILE ICON -->
                                     <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" m-dropdown-toggle="click">
                                         <a href="#" class="m-nav__link m-dropdown__toggle">

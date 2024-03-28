@@ -1,7 +1,7 @@
 <div class="subpage-head has-margin-bottom">
     <div class="container">
-        <h3>Programs &amp; Events </h3>
-        <p class="lead">List of Upcoming Events and Programs</p>
+        <h3>Jadwal Ibadah</h3>
+        <p class="lead">List Jadwal Ibadah Bulan <?= getBulan(date('F')) ?> </p>
     </div>
 </div>
 
@@ -13,8 +13,8 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-4">
                         <div class="highlight-bg has-padding-xs event-details">
-                            <div class="ed-title">EVENT DETAILS</div>
-                            <div class="ed-content"> <span class="glyphicon glyphicon-calendar"></span> <?= getHari($j->hari) . ' ' . date('d F Y', strtotime($j->tanggal)); ?><br>
+                            <div class="ed-title">Keterangan Jadwal</div>
+                            <div class="ed-content"> <span class="glyphicon glyphicon-calendar"></span> <?= getHari($j->hari) . ' ' . date('d', strtotime($j->tanggal)). ' ' . getBulan(date('F')) . ' '.  date('Y', strtotime($j->tanggal)); ?><br>
                                 <span class="glyphicon glyphicon-time"></span> <?= date('H:i', strtotime($schedule->jam_mulai)) . ' - ' . date('H:i', strtotime($schedule->jam_selesai)); ?> <br>
                             </div>
                         </div>
@@ -22,19 +22,11 @@
                     <div class="col-md-8 col-sm-8 bulletin">
                         <h4 class="media-heading"><?= $j->nama_kegiatan ?></h4>
                         <p class="media-content"><?= $schedule->deskripsi; ?></p>
-                        <a class="btn btn-primary" href="javascript:void(0)" role="button" data-toggle="modal" data-target="#jadwalModal_<?= $j->id ?>">Event Details →</a>
+                        <a class="btn btn-primary" href="javascript:void(0)" role="button" data-toggle="modal" data-target="#jadwalModal_<?= $j->id ?>">Lihat Detail Jadwal →</a>
                     </div>
                 </div>
                 <hr>
             <?php endforeach; ?>
-        </div>
-
-
-        <div class="col-md-3">
-            <div class="well">
-                <h4>About</h4>
-                <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-            </div>
         </div>
     </div>
 </div>
@@ -78,7 +70,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>

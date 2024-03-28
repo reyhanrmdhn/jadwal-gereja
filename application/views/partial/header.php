@@ -15,11 +15,6 @@
     <link href="<?= base_url('assets/') ?>css/fancybox.css" rel="stylesheet">
     <link href="<?= base_url('assets/') ?>css/flexslider.css" rel="stylesheet">
 
-    <!--[if lt IE 9]>
-  <script src="js/html5shiv.js"></script>
-  <script src="js/respond.min.js"></script>
-<![endif]-->
-
     <link rel="shortcut icon" href="<?= base_url('assets/') ?>images/favicon.png">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
