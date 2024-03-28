@@ -148,7 +148,7 @@ class Data_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('pelayan_category');
-        $this->db->order_by('sort_order');
+        $this->db->order_by('id asc');
         $data = $this->db->get()->result();
         return $data;
     }
