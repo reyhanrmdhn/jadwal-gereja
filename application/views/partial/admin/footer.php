@@ -7,8 +7,7 @@
                       <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
                           <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
                               <span class="m-footer__copyright">
-                                  2023 &copy; Website by
-                                  <a href="https://reyhanrmdhn.my.id" class="m-link">Raihan Ramadhan</a>
+                                  Copyright &copy; 2023</a>
                               </span>
                           </div>
                       </div>
@@ -39,6 +38,9 @@
               <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js"> </script>
               <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"> </script>
               <script src="<?= base_url() ?>assets/admin/app/js/dashboard.js" type="text/javascript"></script>
+              <!-- calendar -->
+              <script src="<?= base_url() ?>assets/admin/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
+              <script src="<?= base_url() ?>assets/admin/demo/default/custom/components/calendar/basic.js" type="text/javascript"></script>
               <!-- custom script js -->
               <script src="<?= base_url(); ?>assets/admin/app/js/script.js" type="text/javascript"></script>
               <script>

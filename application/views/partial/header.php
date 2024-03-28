@@ -14,6 +14,7 @@
     <link href="<?= base_url('assets/') ?>css/church.css" rel="stylesheet">
     <link href="<?= base_url('assets/') ?>css/fancybox.css" rel="stylesheet">
     <link href="<?= base_url('assets/') ?>css/flexslider.css" rel="stylesheet">
+    <link href="<?= base_url('assets/') ?>css/fullcalendar.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="<?= base_url('assets/') ?>images/favicon.png">
 

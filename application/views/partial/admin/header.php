@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/admin/css/jquery.fancybox.min.css" />
     <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
     <link href="<?= base_url(); ?>assets/admin/custom.css" rel="stylesheet" type="text/css" />
+    <!-- calendar -->
+    <link href="<?= base_url(); ?>assets/admin/vendors/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
     <!-- color picker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css" />

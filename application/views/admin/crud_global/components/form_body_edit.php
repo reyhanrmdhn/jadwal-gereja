@@ -151,27 +151,47 @@
                 <?php if ($page->$rowname !== '') :  ?>
                     <div class="col-sm-12 mb-4">
                         <?php
+                        $dataPelayan = $this->m_data->getPelayanCategory();
                         $dataArray = json_decode($page->$rowname, true);
                         ?>
                         <div class="row">
                             <?php $x = 0 ?>
-                            <?php foreach ($dataArray as $item) : ?>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="form-group m-form__group">
-                                        <label><?= $rowtitle ?></label>
-                                        <select class="form-control m-input select2bs" id="<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>" required="">
-                                            <option value="<?= $item['pelayan']; ?>"><?= $item['pelayan']; ?></option>
-                                        </select>
-                                        <span class="m-form__help">Insert <?= $rowtitle ?></span>
+                            <?php foreach ($dataPelayan as $item) : ?>
+                                <?php if ($item->category == $dataArray[$x]['pelayan']) : ?>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group m-form__group">
+                                            <label><?= $rowtitle ?></label>
+                                            <select class="form-control m-input select2bs" id="<?= strtolower(str_replace(' ', '_',  $dataArray[$x]['pelayan'])) ?>" required="">
+                                                <option value="<?= $dataArray[$x]['pelayan']; ?>"><?= $dataArray[$x]['pelayan']; ?></option>
+                                            </select>
+                                            <span class="m-form__help">Insert <?= $rowtitle ?></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="form-group m-form__group">
-                                        <label>Jumlah Pelayan <?= $item['pelayan']; ?></label>
-                                        <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>" value="<?= $item['jumlah']; ?>" required>
-                                        <span class="m-form__help">Add Jumlah Pelayan <?= $item['pelayan']; ?></span>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group m-form__group">
+                                            <label>Jumlah Pelayan <?= $dataArray[$x]['pelayan']; ?></label>
+                                            <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_',  $dataArray[$x]['pelayan'])) ?>" value="<?= $dataArray[$x]['jumlah']; ?>" required>
+                                            <span class="m-form__help">Add Jumlah Pelayan <?= $dataArray[$x]['pelayan']; ?></span>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php else : ?>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group m-form__group">
+                                            <label><?= $rowtitle ?></label>
+                                            <select class="form-control m-input select2bs" id="<?= strtolower(str_replace(' ', '_',  $item->category)) ?>" required="">
+                                                <option value="<?= $item->category; ?>"><?= $item->category; ?></option>
+                                            </select>
+                                            <span class="m-form__help">Insert <?= $rowtitle ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="form-group m-form__group">
+                                            <label>Jumlah Pelayan <?= $item->category; ?></label>
+                                            <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_',  $item->category)) ?>" value="0" required>
+                                            <span class="m-form__help">Add Jumlah Pelayan <?= $item->category; ?></span>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                                 <?php $x++; ?>
                             <?php endforeach; ?>
                             <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
@@ -182,21 +202,21 @@
                             // Get selected values from each select element
                             <?php foreach ($dataArray as $item) : ?>
                                 // Get the select element by its ID
-                                var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>');
+                                var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item->category)) ?>');
                                 // Get the selected option
                                 var selectedOption = mySelect.options[mySelect.selectedIndex];
                                 // Get the value of the selected option
                                 var selectedValue = selectedOption.value;
 
-                                var selectValue_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?> = {
+                                var selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?> = {
                                     "pelayan": selectedValue,
-                                    "jumlah": document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>").value
+                                    "jumlah": document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value
                                 };
                             <?php endforeach; ?>
                             // Combine values into an array
                             var combinedArray = [
                                 <?php foreach ($dataArray as $item) : ?>
-                                    selectValue_<?= strtolower(str_replace(' ', '_', $item['pelayan'])) ?>,
+                                    selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?>,
                                 <?php endforeach; ?>
                             ];
 

@@ -33,7 +33,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#event-calendar').fullCalendar({
-                googleCalendarApiKey: 'AIzaSyCJ5AqFvTnQ5kUZvYgTMAMjXW5dfpV4qew',
+                googleCalendarApiKey: 'AIzaSyDnqCGVd6jOHXlJG2HYJ0DRXpXrFS-4o7k',
                 events: {
                     googleCalendarId: '6au3emlgjfair5hjhiegs48tcg@group.calendar.google.com'
                 },
