@@ -339,7 +339,10 @@ class AdminPage extends MY_Controller
                     $dataPelayan = json_decode($group_hari[$i]->pelayan, true);
                     foreach ($dataPelayan as $item) {
                         if ($item['pelayan'] !== $pelayan_category->category) {
-                            $services[$item['pelayan']] = $item['jumlah'];
+                            $services = [
+                                'pelayan' => $item['pelayan'],
+                                'jumlah' => $item['jumlah'],
+                            ];
                         }
                     }
                     $pelayan_update = json_encode($services);
