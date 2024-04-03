@@ -329,6 +329,7 @@ class AdminPage extends MY_Controller
     public function delete_pelayan_category()
     {
         $id = $this->input->post('ids');
+        $services = array();
         for ($j = 0; $j < count($id); $j++) {
             $pelayan_category = $this->db->get_where('pelayan_category', ['id' => $id[$j]])->row();
             $jadwal_rules = $this->m_data->getJadwalRules();
@@ -336,16 +337,23 @@ class AdminPage extends MY_Controller
                 $dataPelayan = $this->m_data->getPelayanCategory();
                 $dataArray = json_decode($rules->pelayan, true);
                 $x=0;
-                $services = array();
                 foreach ($dataPelayan as $item){
-                    if (isset($dataArray[$x]['pelayan']) && $item->category === $dataArray[$x]['pelayan'] && $item->category !== $pelayan_category->category) {
-                        $services[$x] = [
-                            'pelayan' => $dataArray[$x]['pelayan'],
-                            'jumlah' => $dataArray[$x]['jumlah']
-                        ];
+                    if ($item->category !== $pelayan_category->category) {
+                        if(isset($dataArray[$x]['pelayan'])){
+                            $services[$x] = [
+                                'pelayan' => $dataArray[$x]['pelayan'],
+                                'jumlah' => $dataArray[$x]['jumlah']
+                            ];
+                        } else {
+                            $services[$x] = [
+                                'pelayan' => $item->category,
+                                'jumlah' => 0
+                            ];
+                        }
                     }
                     $x++;
                 }
+                $services = array_values($services);
                 $pelayan_update = json_encode($services);
                 $dataUpdate = [
                     'pelayan' => $pelayan_update,
@@ -358,6 +366,7 @@ class AdminPage extends MY_Controller
         // $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
         // $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
     }
+
     public function sort_pelayan_category()
     {
         if ($this->input->post('sortOrder')) {
