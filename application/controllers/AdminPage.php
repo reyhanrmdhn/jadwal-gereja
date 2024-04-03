@@ -332,11 +332,11 @@ class AdminPage extends MY_Controller
         for ($j = 0; $j < count($id); $j++) {
             $pelayan_category = $this->db->get_where('pelayan_category', ['id' => $id[$j]])->row();
             $jadwal_rules = $this->m_data->getJadwalRules();
-            $services = array();
             foreach ($jadwal_rules as $rules) {
                 $dataPelayan = $this->m_data->getPelayanCategory();
                 $dataArray = json_decode($rules->pelayan, true);
                 $x=0;
+                $services = array();
                 foreach ($dataPelayan as $item){
                     if (isset($dataArray[$x]['pelayan']) && $item->category === $dataArray[$x]['pelayan'] && $item->category !== $pelayan_category->category) {
                         $services[$x] = [
