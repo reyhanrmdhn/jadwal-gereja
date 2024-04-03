@@ -338,24 +338,22 @@ class AdminPage extends MY_Controller
                 for ($i = 0; $i < count($group_hari); $i++) {
                     $dataPelayan = json_decode($group_hari[$i]->pelayan, true);
                     foreach ($dataPelayan as $item) {
-                        if ($item['jumlah'] > 0) {
-                            if ($item['pelayan'] !== $pelayan_category) {
-                                $services[$item['pelayan']] = $item['jumlah'];
-                            }
+                        if ($item['pelayan'] !== $pelayan_category->category) {
+                            $services[$item['pelayan']] = $item['jumlah'];
                         }
                     }
-                    var_dump($services);die;
+                    $pelayan_update = json_encode($services);
                     $dataUpdate = [
-                        'pelayan' => json_encode($services),
+                        'pelayan' => $pelayan_update,
                     ];
-                    $this->db->where('id', $rules->id);
-                    $this->db->update('jadwal_rules', $dataUpdate);
+                    $this->db->where('id',$rules->id);
+                    $this->db->update('jadwal_rules',$dataUpdate);
                 }
             }
         }
 
-        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
-        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
+        // $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
+        // $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
     }
     public function sort_pelayan_category()
     {
