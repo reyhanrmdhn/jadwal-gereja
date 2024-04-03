@@ -248,7 +248,7 @@
                                 </div>
                                 <?php $x++; ?>
                             <?php endforeach; ?>
-                            <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
+                            <input type="text" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
                         </div>
                     </div>
 
