@@ -329,6 +329,7 @@ class AdminPage extends MY_Controller
     public function delete_pelayan_category()
     {
         $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
+        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
     }
     public function sort_pelayan_category()
     {
@@ -507,11 +508,11 @@ class AdminPage extends MY_Controller
             redirect('admin-page/' . str_replace("_", "-", $data['tablename']) . '-list');
         }
     }
-    public function delete_pelayan()
+    public function delete_pelayan_list()
     {
         $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id');
     }
-    public function sort_pelayan()
+    public function sort_pelayan_list()
     {
         if ($this->input->post('sortOrder')) {
             $orders = $this->input->post('sortOrder');
