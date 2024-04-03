@@ -170,7 +170,7 @@
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group m-form__group">
                                             <label>Jumlah Pelayan <?= $dataArray[$x]['pelayan']; ?></label>
-                                            <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_',  $dataArray[$x]['pelayan'])) ?>" value="<?= $dataArray[$x]['jumlah']; ?>" required>
+                                            <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_',  $dataArray[$x]['pelayan'])) ?>" value="<?= $dataArray[$x]['jumlah']; ?>" required onchange="combineSelectValues()">
                                             <span class="m-form__help">Add Jumlah Pelayan <?= $dataArray[$x]['pelayan']; ?></span>
                                         </div>
                                     </div>
@@ -187,18 +187,18 @@
                                     <div class="col-lg-6 mb-4">
                                         <div class="form-group m-form__group">
                                             <label>Jumlah Pelayan <?= $item->category; ?></label>
-                                            <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_',  $item->category)) ?>" value="0" required>
+                                            <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_',  $item->category)) ?>" value="0" required onchange="combineSelectValues()">
                                             <span class="m-form__help">Add Jumlah Pelayan <?= $item->category; ?></span>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                                 <?php $x++; ?>
                             <?php endforeach; ?>
-                            <input type="text" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
+                            <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
                         </div>
                     </div>
                     <script>
-                        window.onload = function() {
+                        function combineSelectValues() {
                             // Get selected values from each select element
                             <?php foreach ($dataPelayan as $item) : ?>
                                 // Get the select element by its ID
@@ -222,6 +222,9 @@
 
                             // Log or do something with the combined array
                             document.getElementById('<?= $rowtitle ?>').value = JSON.stringify(combinedArray);
+                        }
+                        window.onload = function(){
+                            combineSelectValues();
                         }
                     </script>
                 <?php else : ?>
@@ -253,7 +256,7 @@
                     </div>
 
                     <script>
-                        windows.onload = function combineSelectValues2() {
+                        function combineSelectValues2() {
                             // Get selected values from each select element
                             <?php foreach ($dataPelayan as $pelayan) : ?>
                                 // Get the select element by its ID
