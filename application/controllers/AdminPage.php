@@ -328,26 +328,29 @@ class AdminPage extends MY_Controller
     }
     public function delete_pelayan_category()
     {
-        $pelayan_category = $this->db->get_where('pelayan_category',['id'=>$this->input->post('ids')])->row();
-
-        $jadwal_rules = $this->m_data->getJadwalRules();
-        $services = array();
-        foreach ($jadwal_rules as $rules) {
-            $group_hari = $this->db->get_where('jadwal_rules', ['hari' => $rules->hari])->result();
-            for ($i = 0; $i < count($group_hari); $i++) {
-                $dataPelayan = json_decode($group_hari[$i]->pelayan, true);
-                foreach ($dataPelayan as $item) {
-                    if ($item['jumlah'] > 0) {
-                        if ($item['pelayan'] !== $pelayan_category) {
-                            $services[$item['pelayan']] = $item['jumlah'];
+        $id = $this->input->post('ids');
+        for ($i = 0; $i < count($id); $i++) {
+            $pelayan_category = $this->db->get_where('pelayan_category', ['id' => $id[$i]])->row();
+            $jadwal_rules = $this->m_data->getJadwalRules();
+            $services = array();
+            foreach ($jadwal_rules as $rules) {
+                $group_hari = $this->db->get_where('jadwal_rules', ['hari' => $rules->hari])->result();
+                for ($i = 0; $i < count($group_hari); $i++) {
+                    $dataPelayan = json_decode($group_hari[$i]->pelayan, true);
+                    foreach ($dataPelayan as $item) {
+                        if ($item['jumlah'] > 0) {
+                            if ($item['pelayan'] !== $pelayan_category) {
+                                $services[$item['pelayan']] = $item['jumlah'];
+                            }
                         }
                     }
+                    var_dump($services);die;
+                    $dataUpdate = [
+                        'pelayan' => json_encode($services),
+                    ];
+                    $this->db->where('id', $rules->id);
+                    $this->db->update('jadwal_rules', $dataUpdate);
                 }
-                $dataUpdate = [
-                    'pelayan' => json_encode($services),
-                ];
-                $this->db->where('id',$rules->id);
-                $this->db->update('jadwal_rules', $dataUpdate);
             }
         }
 
