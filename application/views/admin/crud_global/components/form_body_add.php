@@ -158,7 +158,7 @@
                         <div class="col-lg-6 mb-4">
                             <div class="form-group m-form__group">
                                 <label>Jumlah Pelayan <?= $pelayan->category; ?></label>
-                                <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>" value="" onchange="combineSelectValues()" required>
+                                <input type="number" class="form-control m-input" placeholder="Enter Jumlah Pelayan" id="jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>" value="" onchange="combineSelectValues_<?= $pelayan->id?>()" required>
                                 <span class="m-form__help">Add Jumlah Pelayan <?= $pelayan->category; ?></span>
                             </div>
                         </div>
@@ -167,31 +167,44 @@
                     <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
                 </div>
                 <script>
-                    function combineSelectValues() {
-                        // Get selected values from each select element
-                        <?php foreach ($dataPelayan as $pelayan) : ?>
-                            // Get the select element by its ID
-                            var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>');
-                            // Get the selected option
-                            var selectedOption = mySelect.options[mySelect.selectedIndex];
-                            // Get the value of the selected option
-                            var selectedValue = selectedOption.value;
+                    <?php foreach ($dataPelayan as $pelayan) : ?>
+                        function combineSelectValues_<?= $pelayan->id ?>() {
+                            var ifError = 0;
+                            // Get selected values from each select element
+                            <?php $jlhSdmPelayan = $this->db->get_where('pelayan', ['id_pelayan_category' => $pelayan->id])->num_rows(); ?>
+                            var jlhSdmPelayan = <?= $jlhSdmPelayan ?>;
+                            // check if sdm is available
+                            if (document.getElementById("jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>").value > jlhSdmPelayan) {
+                                alert('Jumlah SDM Tidak Memadai!');
+                                document.getElementById("jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>").value = 0;
+                                ifError = 1;
+                            } else {
+                                // Get the select element by its ID
+                                var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>');
+                                // Get the selected option
+                                var selectedOption = mySelect.options[mySelect.selectedIndex];
+                                // Get the value of the selected option
+                                var selectedValue = selectedOption.value;
 
-                            var selectValue_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?> = {
-                                "pelayan": selectedValue,
-                                "jumlah": document.getElementById("jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>").value
-                            };
-                        <?php endforeach; ?>
-                        // Combine values into an array
-                        var combinedArray = [
-                            <?php foreach ($dataPelayan as $pelayan) : ?>
-                                selectValue_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>,
-                            <?php endforeach; ?>
-                        ];
+                                var selectValue_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?> = {
+                                    "pelayan": selectedValue,
+                                    "jumlah": document.getElementById("jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>").value
+                                };
+                            }
 
-                        // Log or do something with the combined array
-                        document.getElementById('<?= $rowtitle ?>').value = JSON.stringify(combinedArray);
-                    }
+                            if (ifError == 0) {
+                                // Combine values into an array
+                                var combinedArray = [
+                                    <?php foreach ($dataPelayan as $pelayan) : ?>
+                                        selectValue_<?= strtolower(str_replace(' ', '_', $pelayan->category)) ?>,
+                                    <?php endforeach; ?>
+                                ];
+
+                                // Log or do something with the combined array
+                                document.getElementById('<?= $rowtitle ?>').value = JSON.stringify(combinedArray);
+                            }
+                        }
+                    <?php endforeach; ?>
                 </script>
             </div>
         <?php elseif ($rowtype == "selectLocation") : ?>
