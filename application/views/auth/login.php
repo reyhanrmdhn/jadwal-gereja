@@ -33,19 +33,19 @@
 <body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--fixed m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
     <!-- begin:: Page -->
     <div class="m-grid m-grid--hor m-grid--root m-page">
-        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2" id="m_login" style="background-image: url(<?= base_url(); ?>assets/admin/app/media/img//bg/bg.jpg);background-size:cover">
+        <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2" id="m_login" style="background-image: url(<?= base_url(); ?>assets/img/bg-login.jpg);background-size:cover">
             <div class="m-grid__item m-grid__item--fluid m-login__wrapper">
                 <div class="m-login__container">
                     <div class="m-login__logo">
                         <a href="#">
-                            <img src="<?= base_url(); ?>assets/admin/app/media/img/logos/firstpagelogo.png" style="max-width: 100px;">
+                            <img src="<?= base_url(); ?>assets/img/logo/logo.png" style="max-width: 150px;">
                         </a>
                     </div>
                     <div class="m-login__signin">
                         <div class="m-login__head">
-                            <h3 class="m-login__title">Sign In To Admin</h3>
+                            <h3 class="m-login__title">Masuk Sebagai Majelis</h3>
                         </div>
-                        <?= form_open('gotoadminpage', 'class="m-login__form m-form"'); ?>
+                        <?= form_open('home', 'class="m-login__form m-form"'); ?>
                         <?php if (validation_errors()) : ?>
                             <div class="m-alert m-alert--outline alert alert-danger alert-dismissible animated fadeIn" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button> <span> <?= validation_errors('<li>', '</li>') ?></span>
@@ -59,7 +59,10 @@
                             <input class="form-control m-input m-login__form-input--last" type="password" placeholder="Password" name="password">
                         </div>
                         <div class="m-login__form-action">
-                            <input type="submit" value="Sign In" name="submit" id="m_login_signin_submit" class="btn  m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">
+                            <input type="submit" value="Log In" name="submit" id="m_login_signin_submit" class="btn  m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">
+                        </div>
+                        <div class="m-login__form-action" style="margin-top:10px">
+                            <button type="button" onclick="location.href='<?= base_url('jadwal') ?>'" class="btn m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Masuk Sebagai Jemaat/Pelayan</button>
                         </div>
                         <?= form_close(); ?>
                     </div>

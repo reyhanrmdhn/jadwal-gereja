@@ -184,3 +184,17 @@ function getBulan($month)
 
   return $bulan;
 }
+
+function getDayOrder()
+{
+    $dayOrder = array(
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+  );
+  return $dayOrder;
+}

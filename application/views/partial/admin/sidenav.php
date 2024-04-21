@@ -25,35 +25,6 @@
             </a>
         </li>
 
-        <!-- page content -->
-        <li class="m-menu__section" style="margin-top:10px">
-            <h4 class="m-menu__section-text">Page Content</h4>
-        </li>
-
-        <!-- HOME  -->
-        <li class="m-menu__item  m-menu__item--submenu
-        <?= strpos($this->uri->segment(2), 'home') !== false ?
-            'm-menu__item--open m-menu__item--expanded m-menu__item--active' : '' ?>" aria-haspopup="true" m-menu-submenu-toggle="hover">
-            <a href="javascript:;" class="m-menu__link m-menu__toggle">
-                <i class="m-menu__link-icon fa fa-home"></i>
-                <span class="m-menu__link-text">Home</span>
-                <i class="m-menu__ver-arrow la la-angle-right"></i>
-            </a>
-            <div class="m-menu__submenu ">
-                <span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
-                    <li class="m-menu__item m-menu__item--<?= strpos($this->uri->segment(2), 'home-banner') !== false ? 'active' : '' ?>" aria-haspopup="true">
-                        <a href="<?php echo site_url('admin-page/home-banner') ?>" class="m-menu__link ">
-                            <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                                <span></span>
-                            </i>
-                            <span class="m-menu__link-text">Banner</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-
 
          <!-- PENJADWALAN -->
          <li class="m-menu__item  m-menu__item--submenu

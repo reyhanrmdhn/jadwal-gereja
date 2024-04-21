@@ -156,4 +156,47 @@ class Input_model extends CI_Model
         return $dataSubmit;
     }
 
+    public function sortByCustomOrder($a, $b) {
+		$dayOrder = getDayOrder();
+
+		$positionA = array_search($a, $dayOrder);
+		$positionB = array_search($b, $dayOrder);
+
+		return $positionA - $positionB;
+	}
+
+    public function getFirstDay()
+    {
+        $this->db->select('hari');
+		$this->db->from('jadwal_rules');
+		$day = $this->db->get()->result_array();
+		$days = array();
+		foreach ($day as $subArray) {
+			$days[] = $subArray['hari'];
+		}
+		usort($days, array($this, 'sortByCustomOrder'));
+		$firstDay = $days[0];
+
+        return $firstDay;
+    }
+
+    public function getDayBefore()
+    {
+        $this->db->select('hari');
+		$this->db->from('jadwal_rules');
+		$day = $this->db->get()->result_array();
+		$days = array();
+		foreach ($day as $subArray) {
+			$days[] = $subArray['hari'];
+		}
+		usort($days, array($this, 'sortByCustomOrder'));
+		// Get the day before the first array element
+		$dayOrder = getDayOrder();
+		$firstDay = $days[0];
+		$position = array_search($firstDay, $dayOrder);
+		$dayBeforeFirst = $position > 0 ? $dayOrder[$position - 1] : end($dayOrder);
+
+        return $dayBeforeFirst;
+    }
+
 }

@@ -140,116 +140,9 @@ class AdminPage extends MY_Controller
 
 
 
-    // -----------------------------------
-    //            PAGE CONTENT
-    // -----------------------------------
-    // Home -------------------------
-    public function home_banner()
-    {
-        $data['title'] = 'Home Banner List';
-        $data['tablename'] = "home_banner";
-        $data['pages'] = $this->m_data->getHomeBanner();
-        $this->m_global->getAdminView('admin/page_content/home/banner', $data);
-    }
-    public function add_home_banner()
-    {
-        $data['tablename'] = "home_banner";
-        $data['title'] = 'Add ' . ucwords(str_replace("_", " ", $data['tablename']));
-
-        $data['rows'] = [
-            [
-                ["banner_title", "text_full"],
-                ["banner_subtitle", "description"],
-                ["image", "image"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/add', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set image
-            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
-            // insert to db
-            $this->db->insert($data['tablename'], $dataSubmit);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Added !
-                </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
-        }
-    }
-    public function edit_home_banner($id = null)
-    {
-        if (empty($id)) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['tablename'] = "home_banner";
-        $data['title'] = 'Edit ' . ucwords(str_replace("_", " ", $data['tablename']));
-        $data['page'] = $this->db->get_where($data['tablename'], array("id" => $id))->row();
-
-        if (empty($data['page'])) {
-            redirect('error-404', 'refresh');
-        }
-
-        $data['rows'] = [
-            [
-                ["banner_title", "text_full"],
-                ["banner_subtitle", "description"],
-                ["image", "image"],
-            ]
-        ];
-
-        // form rules
-        $this->m_input->setFormRules($data['rows']);
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->m_global->getAdminView('admin/crud_global/edit', $data);
-        } else {
-            $dataSubmit = $this->input->post();
-            // set image
-            $dataSubmit = $this->m_input->setImages($data['rows'], $dataSubmit);
-            // update table
-            $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
-            $this->session->set_flashdata(
-                'success',
-                '<div class="alert alert-success alert-message alert-dismissible fade show" role="alert">
-                       <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-                       ' . ucwords(str_replace("_", " ", $data['tablename'])) . ' Updated !
-                </div>'
-            );
-            redirect('admin-page/' . str_replace("_", "-", $data['tablename']));
-        }
-    }
-    public function delete_home_banner()
-    {
-        $this->m_global->deleteTable($this->input->post('ids'), 'home_banner', 'id');
-    }
-    public function sort_home_banner()
-    {
-        if ($this->input->post('sortOrder')) {
-            $orders = $this->input->post('sortOrder');
-            $totalOrders = count($orders);
-            for ($i = 0; $i < $totalOrders; $i++) {
-                $this->m_global->updateDataPosition($orders[$i], $i + 1, 'home_banner');
-            };
-        } else {
-            $this->session->set_flashdata('error', 'No direct script access allowed.');
-            redirect('admin-page');
-        }
-    }
-
 
     // JADWAL GEREJA
     // KATEGORI PELAYAN -------------------------
-    // Quotes -------------------------
     public function pelayan_category()
     {
         $data['title'] = 'List Kategori Pelayan';
@@ -565,9 +458,9 @@ class AdminPage extends MY_Controller
     // JADWAL -------------------------
     public function jadwal()
     {
-        $data['title'] = 'Jadwal Ibadah';
+        $data['title'] = 'Jadwal Ibadah Bulan ' . getBulan(date('F'));
         $data['tablename'] = "jadwal";
-        $data['pages'] = $this->m_data->getJadwal();
+        $data['pages'] = $this->m_data->getJadwalThisMonth(date('m'));
         $this->m_global->getAdminView('admin/page_content/jadwal/index', $data);
     }
     public function jadwal_rules()
@@ -613,7 +506,6 @@ class AdminPage extends MY_Controller
             ],
         ];
 
-
         $data['rows'] = [
             [
                 ["nama_kegiatan", "text"],
@@ -632,6 +524,15 @@ class AdminPage extends MY_Controller
             $this->m_global->getAdminView('admin/crud_global/add', $data);
         } else {
             $dataSubmit = $this->input->post();
+            $day = $dataSubmit['hari'];
+            $dayFirst = $this->m_input->getFirstDay();
+            $dayBefore = $this->m_input->getDayBefore();
+            if ($day !== $dayFirst) {
+                if ($day !== $dayBefore) {
+                    $dataSubmit['hari'] = $dayBefore;
+                }
+            }
+
             // insert to db
             $this->db->insert($data['tablename'], $dataSubmit);
             $this->session->set_flashdata(

@@ -54,14 +54,10 @@ $route['404_override'] = 'My404';
 $route['translate_uri_dashes'] = TRUE;
 
 // --- auth
-$route['logout'] = "AdminAuth/logout";
+$route['logout'] = "Home/logout";
 // kicked out whenever user trying to access auth controller
 $route['adminpage'] = "My404";
 $route['AdminPage'] = "My404";
-$route['adminauth'] = "My404";
-$route['AdminAuth'] = "My404";
-// route url masking
-$route['gotoadminpage'] = "AdminAuth";
 
 // --- adminpage
 $route['admin-page'] = "AdminPage";
