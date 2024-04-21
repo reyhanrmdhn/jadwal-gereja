@@ -222,6 +222,9 @@ class AdminPage extends MY_Controller
     public function delete_pelayan_category()
     {
         $id = $this->input->post('ids');
+        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
+        $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
+
         $services = array();
         for ($j = 0; $j < count($id); $j++) {
             $pelayan_category = $this->db->get_where('pelayan_category', ['id' => $id[$j]])->row();
@@ -255,9 +258,6 @@ class AdminPage extends MY_Controller
                 $this->db->update('jadwal_rules',$dataUpdate);
             }
         }
-
-        // $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
-        // $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
     }
 
     public function sort_pelayan_category()
@@ -527,9 +527,11 @@ class AdminPage extends MY_Controller
             $day = $dataSubmit['hari'];
             $dayFirst = $this->m_input->getFirstDay();
             $dayBefore = $this->m_input->getDayBefore();
-            if ($day !== $dayFirst) {
-                if ($day !== $dayBefore) {
-                    $dataSubmit['hari'] = $dayBefore;
+            if ($day !== 'Sunday') {
+                if ($day !== $dayFirst) {
+                    if ($day !== $dayBefore) {
+                        $dataSubmit['hari'] = $dayBefore;
+                    }
                 }
             }
 
@@ -612,9 +614,11 @@ class AdminPage extends MY_Controller
             $day = $dataSubmit['hari'];
             $dayFirst = $this->m_input->getFirstDay();
             $dayBefore = $this->m_input->getDayBefore();
-            if ($day !== $dayFirst) {
-                if ($day !== $dayBefore) {
-                    $dataSubmit['hari'] = $dayBefore;
+            if ($day !== 'Sunday') {
+                if ($day !== $dayFirst) {
+                    if ($day !== $dayBefore) {
+                        $dataSubmit['hari'] = $dayBefore;
+                    }
                 }
             }
             // update table
