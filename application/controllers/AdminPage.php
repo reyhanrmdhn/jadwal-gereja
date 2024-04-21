@@ -609,6 +609,14 @@ class AdminPage extends MY_Controller
             $this->m_global->getAdminView('admin/crud_global/edit', $data);
         } else {
             $dataSubmit = $this->input->post();
+            $day = $dataSubmit['hari'];
+            $dayFirst = $this->m_input->getFirstDay();
+            $dayBefore = $this->m_input->getDayBefore();
+            if ($day !== $dayFirst) {
+                if ($day !== $dayBefore) {
+                    $dataSubmit['hari'] = $dayBefore;
+                }
+            }
             // update table
             $this->db->update($data['tablename'], $dataSubmit, ['id' => $id]);
             $this->session->set_flashdata(
