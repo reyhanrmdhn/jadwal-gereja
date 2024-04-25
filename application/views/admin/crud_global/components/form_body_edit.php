@@ -199,6 +199,7 @@
                     </div>
                     <script>
                         <?php foreach ($dataPelayan as $item) : ?>
+
                             function combineSelectValues_<?= $item->id ?>() {
                                 <?php $jlhSdmPelayan = $this->db->get_where('pelayan', ['id_pelayan_category' => $item->id])->num_rows(); ?>
                                 var jlhSdmPelayan = <?= $jlhSdmPelayan ?>;
@@ -223,7 +224,9 @@
 
                                     // Combine values into an array
                                     var combinedArray = [
-                                        selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?>,
+                                        <?php foreach ($dataPelayan as $item) : ?>
+                                            selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?>,
+                                        <?php endforeach; ?>
                                     ];
 
                                     // Log or do something with the combined array
