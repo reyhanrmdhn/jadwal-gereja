@@ -194,7 +194,7 @@
                                 <?php endif; ?>
                                 <?php $x++; ?>
                             <?php endforeach; ?>
-                            <input type="text" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
+                            <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
                         </div>
                     </div>
                     <script>
@@ -208,14 +208,14 @@
                                     alert('Jumlah SDM Tidak Memadai!');
                                     document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value = 0;
                                 } else {
-                                    // Get the select element by its ID
-                                    var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item->category)) ?>');
-                                    // Get the selected option
-                                    var selectedOption = mySelect.options[mySelect.selectedIndex];
-                                    // Get the value of the selected option
-                                    var selectedValue = selectedOption.value;
-
                                     <?php foreach ($dataPelayan as $item) : ?>
+                                        // Get the select element by its ID
+                                        var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item->category)) ?>');
+                                        // Get the selected option
+                                        var selectedOption = mySelect.options[mySelect.selectedIndex];
+                                        // Get the value of the selected option
+                                        var selectedValue = selectedOption.value;
+
                                         var selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?> = {
                                             "pelayan": selectedValue,
                                             "jumlah": document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value
