@@ -194,21 +194,18 @@
                                 <?php endif; ?>
                                 <?php $x++; ?>
                             <?php endforeach; ?>
-                            <input type="hidden" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
+                            <input type="text" name="<?= $rowtitle ?>" id="<?= $rowtitle ?>" value="">
                         </div>
                     </div>
                     <script>
                         <?php foreach ($dataPelayan as $item) : ?>
-
                             function combineSelectValues_<?= $item->id ?>() {
-                                var ifError = 0;
                                 <?php $jlhSdmPelayan = $this->db->get_where('pelayan', ['id_pelayan_category' => $item->id])->num_rows(); ?>
                                 var jlhSdmPelayan = <?= $jlhSdmPelayan ?>;
                                 // check if sdm is available
                                 if (document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value > jlhSdmPelayan) {
                                     alert('Jumlah SDM Tidak Memadai!');
                                     document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value = 0;
-                                    ifError = 1;
                                 } else {
                                     // Get the select element by its ID
                                     var mySelect = document.getElementById('<?= strtolower(str_replace(' ', '_', $item->category)) ?>');
@@ -217,13 +214,13 @@
                                     // Get the value of the selected option
                                     var selectedValue = selectedOption.value;
 
-                                    var selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?> = {
-                                        "pelayan": selectedValue,
-                                        "jumlah": document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value
-                                    };
-                                }
+                                    <?php foreach ($dataPelayan as $item) : ?>
+                                        var selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?> = {
+                                            "pelayan": selectedValue,
+                                            "jumlah": document.getElementById("edit_jumlah_pelayan_<?= strtolower(str_replace(' ', '_', $item->category)) ?>").value
+                                        };
+                                    <?php endforeach; ?>
 
-                                if (ifError == 0) {
                                     // Combine values into an array
                                     var combinedArray = [
                                         selectValue_<?= strtolower(str_replace(' ', '_', $item->category)) ?>,
