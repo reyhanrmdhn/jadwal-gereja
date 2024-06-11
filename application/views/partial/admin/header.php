@@ -41,6 +41,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css" />
     <!-- fontawesome -->
     <link rel="stylesheet" href="<?= base_url(); ?>assets/css/font-awesome-pro.css">
+
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
 </head>
 
 <!-- Head -->

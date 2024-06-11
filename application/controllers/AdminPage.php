@@ -12,6 +12,8 @@ class AdminPage extends MY_Controller
     public function index()
     {
         $data['title'] = 'Dashboard';
+        $data['pelayan_category'] = $this->db->get('pelayan_category')->result();
+
         $this->m_global->getAdminView('admin/dashboard', $data);
     }
     // users
@@ -229,10 +231,10 @@ class AdminPage extends MY_Controller
             foreach ($jadwal_rules as $rules) {
                 $dataPelayan = $this->m_data->getPelayanCategory();
                 $dataArray = json_decode($rules->pelayan, true);
-                $x=0;
-                foreach ($dataPelayan as $item){
+                $x = 0;
+                foreach ($dataPelayan as $item) {
                     if ($item->category !== $pelayan_category->category) {
-                        if(isset($dataArray[$x]['pelayan'])){
+                        if (isset($dataArray[$x]['pelayan'])) {
                             $services[$x] = [
                                 'pelayan' => $dataArray[$x]['pelayan'],
                                 'jumlah' => $dataArray[$x]['jumlah']
@@ -251,14 +253,13 @@ class AdminPage extends MY_Controller
                 $dataUpdate = [
                     'pelayan' => $pelayan_update,
                 ];
-                $this->db->where('id',$rules->id);
-                $this->db->update('jadwal_rules',$dataUpdate);
+                $this->db->where('id', $rules->id);
+                $this->db->update('jadwal_rules', $dataUpdate);
             }
         }
 
         $this->m_global->deleteTable($this->input->post('ids'), 'pelayan_category', 'id');
         $this->m_global->deleteTable($this->input->post('ids'), 'pelayan', 'id_pelayan_category');
-
     }
 
     public function sort_pelayan_category()
@@ -701,6 +702,31 @@ class AdminPage extends MY_Controller
             ];
             $this->db->insert('jadwal', $data);
         endfor;
+
+        // truncate jadwal pelayan
+        $pelayanLoop = $this->db->get('pelayan')->result();
+        foreach ($pelayanLoop as $p) {
+            $dataUpdateTruncate = [
+                'list_jadwal' => ''
+            ];
+            $this->db->update('pelayan', $dataUpdateTruncate, ['id' => $p->id]);
+        }
+        // set jadwal to pelayan
+        $json_data = $this->db->get('jadwal')->result();
+        foreach ($json_data as $json_data) {
+            $data = json_decode($json_data->pelayan, true);
+            $data = array_values($data);
+            for ($i = 0; $i < count($data); $i++) {
+                for ($j = 0; $j < count($data[$i]); $j++) {
+                    $pelayan = $this->db->get_where('pelayan', ['nama' => $data[$i][$j]])->row();
+                    $jadwal = ($pelayan->list_jadwal == '') ? date('d', strtotime($json_data->tanggal)) : $pelayan->list_jadwal . ',' . date('d', strtotime($json_data->tanggal));
+                    $dataUpdate = [
+                        'list_jadwal' => $jadwal
+                    ];
+                    $this->db->update('pelayan', $dataUpdate, ['nama' => $data[$i][$j]]);
+                }
+            }
+        }
 
         $this->session->set_flashdata(
             'success',

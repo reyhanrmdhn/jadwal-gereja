@@ -41,6 +41,15 @@
               <!-- calendar -->
               <script src="<?= base_url() ?>assets/admin/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
               <script src="<?= base_url() ?>assets/admin/demo/default/custom/components/calendar/basic.js" type="text/javascript"></script>
+              <!-- chart -->
+              <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+              <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+              <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+              <script src="https://www.amcharts.com/lib/3/gantt.js"></script>
+              <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+              <script src="https://www.amcharts.com/lib/3/themes/dark.js"></script>
+
               <!-- custom script js -->
               <script src="<?= base_url(); ?>assets/admin/app/js/script.js" type="text/javascript"></script>
               <script>
@@ -103,5 +112,75 @@
                       }
                   }
               </script>
+
+              <?php if ($this->router->fetch_class() == 'AdminPage' && $this->router->fetch_method() == 'index') : ?>
+                  <script>
+                      <?php foreach ($pelayan_category as $c) : ?>
+                          var chart = AmCharts.makeChart("chart<?= str_replace(' ', '_', $c->category) ?>", {
+                              "type": "gantt",
+                              "theme": "light",
+                              "marginRight": 70,
+                              "period": "DD",
+                              "dataDateFormat": "YYYY-MM-DD",
+                              "columnWidth": 0.5,
+                              "valueAxis": {
+                                  "type": "date"
+                              },
+                              "brightnessStep": 7,
+                              "graph": {
+                                  "fillAlphas": 1,
+                                  "lineAlpha": 1,
+                                  "lineColor": "#000",
+                                  "fillAlphas": 0.85,
+                                  "balloonText": "<b>[[task]]</b>:<br />[[open]] -- [[value]]",
+                                  "columnWidth": 0.8 // Thicken the bars
+                              },
+                              "rotate": true,
+                              "categoryField": "category",
+                              "segmentsField": "segments",
+                              "colorField": "color",
+                              "startDateField": "start",
+                              "endDateField": "end",
+                              "dataProvider": [
+                                  <?php $pelayan = $this->db->get_where('pelayan', ['id_pelayan_category' => $c->id])->result(); ?>
+                                  <?php foreach ($pelayan as $p) : ?> {
+                                          "category": "<?= $p->nama ?>",
+                                          "segments": [
+                                              <?php $jadwal = explode(',', $p->list_jadwal); ?>
+                                              <?php foreach ($jadwal as $j) : ?> {
+                                                      <?php $date = date('Y') . '-' . date('m') . '-' . $j ?>
+                                                      <?php $tomorrow = DateTime::createFromFormat('Y-m-d', $date); ?>
+                                                      <?php $tomorrow->modify('+1 day'); ?>
+                                                          "start": "<?= date('Y') . '-' . date('m') . '-' . $j ?>",
+                                                          "end": "<?= $tomorrow->format('Y-m-d') ?>",
+                                                          "color": "#b9783f",
+                                                          "task": "test"
+                                                  },
+                                              <?php endforeach; ?>
+                                          ],
+                                      },
+                                  <?php endforeach; ?>
+                              ],
+                              "valueScrollbar": {
+                                  "autoGridCount": true
+                              },
+                              "chartCursor": {
+                                  "cursorColor": "#55bb76",
+                                  "valueBalloonsEnabled": false,
+                                  "cursorAlpha": 0,
+                                  "valueLineAlpha": 0.5,
+                                  "valueLineBalloonEnabled": true,
+                                  "valueLineEnabled": true,
+                                  "zoomable": false,
+                                  "valueZoomable": true
+                              },
+                              "export": {
+                                  "enabled": true
+                              }
+                          });
+                      <?php endforeach; ?>
+                  </script>
+
+              <?php endif; ?>
 
               </html>
